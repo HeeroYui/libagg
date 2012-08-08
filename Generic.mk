@@ -9,7 +9,7 @@ $(info $(LOCAL_MODULE) version TAG : $(LOCAL_VERSION_TAG))
 
 
 # name of the dependency
-LOCAL_STATIC_LIBRARIES := libfreetype
+LOCAL_STATIC_LIBRARIES := freetype
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH) \
                     $(LOCAL_PATH)/agg/ \
