@@ -1,3 +1,5 @@
+LOCAL_PATH := $(call my-dir)
+include $(CLEAR_VARS)
 
 # name of the librairy
 LOCAL_MODULE := agg
@@ -17,16 +19,11 @@ LOCAL_C_INCLUDES := $(LOCAL_PATH) \
 
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)
 
-ifeq ($(DEBUG),1)
-LOCAL_CFLAGS := -DAGG_DEBUG_LEVEL=3 \
-                -DAGG_VERSION_TAG_NAME="\"$(LOCAL_VERSION_TAG_SHORT)-debug\""
-else
-LOCAL_CFLAGS := -DAGG_DEBUG_LEVEL=3 \
-                -DAGG_VERSION_TAG_NAME="\"$(LOCAL_VERSION_TAG_SHORT)-release\""
-endif
+LOCAL_CFLAGS := -DAGG_VERSION_TAG_NAME="\"$(LOCAL_VERSION_TAG_SHORT)-$(BUILD_DIRECTORY_MODE)\""
 
 # load the common sources file of the platform
 include $(LOCAL_PATH)/file.mk
 
 LOCAL_SRC_FILES := $(FILE_LIST)
 
+include $(BUILD_STATIC_LIBRARY)
