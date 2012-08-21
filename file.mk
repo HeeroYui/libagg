@@ -28,3 +28,8 @@ FILE_LIST = agg/agg_arc.cpp \
 			agg/agg_vpgen_clip_polyline.cpp \
 			agg/agg_vpgen_segmentator.cpp
 
+#ewol abstraction of the graphic librairies :
+FILE_LIST+= draw/Debug.cpp \
+            draw/Color.cpp \
+            draw/Image.cpp
+

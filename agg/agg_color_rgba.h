@@ -29,6 +29,16 @@
 
 namespace agg
 {
+	struct rgba8;
+}
+namespace draw
+{
+	void ParseColor(const char* _input, struct agg::rgba8& color);
+}
+#include <draw/Debug.h>
+
+namespace agg
+{
     // Supported byte orders for RGB and RGBA pixel formats
     //=======================================================================
     struct order_rgb  { enum rgb_e  { R=0, G=1, B=2, rgb_tag }; };       //----order_rgb
@@ -240,7 +250,13 @@ namespace agg
         value_type a;
 
         //--------------------------------------------------------------------
-        rgba8() {}
+        rgba8(unsigned int _input = 0)
+        {
+            r = (uint8_t)((_input&0xFF000000)>>24);
+            g = (uint8_t)((_input&0x00FF0000)>>16);
+            b = (uint8_t)((_input&0x0000FF00)>>8);
+            a = (uint8_t)((_input&0x000000FF));
+        }
 
         //--------------------------------------------------------------------
         rgba8(unsigned r_, unsigned g_, unsigned b_, unsigned a_=base_mask) :
@@ -416,6 +432,61 @@ namespace agg
         {
             return self_type(rgba::from_wavelength(wl, gamma));
         }
+        // parse a color whith a name or special Format:
+        AGG_INLINE void Set(const char * _input)
+        {
+            draw::ParseColor(_input, *this);
+        };
+        
+        uint32_t Get(void)
+        {
+            return ((uint32_t)r<<24)+((uint32_t)g<<16)+((uint32_t)b<<8)+((uint32_t)a);
+        };
+        
+        self_type & operator=(const uint32_t _input)
+        {
+            r = (uint8_t)((_input&0xFF000000)>>24);
+            g = (uint8_t)((_input&0x00FF0000)>>16);
+            b = (uint8_t)((_input&0x0000FF00)>>8);
+            a = (uint8_t)((_input&0x000000FF));
+            return *this;
+        };
+        self_type & operator=(const self_type& _input)
+        {
+            if( this != &_input ) {
+                r = _input.r;
+                g = _input.g;
+                b = _input.b;
+                a = _input.a;
+            }
+            return *this;
+        };
+        self_type & operator=(const char* _input)
+        {
+            draw::ParseColor(_input, *this);
+            return *this;
+        };
+        bool operator==(const self_type& _input) const
+        {
+            if(    r != _input.r
+                || g != _input.g
+                || b != _input.b
+                || a != _input.a ) {
+                return false;
+            }
+            return true;
+        };
+        bool operator!=(const self_type& _input) const
+        {
+            if(    r != _input.r
+                || g != _input.g
+                || b != _input.b
+                || a != _input.a ) {
+                return true;
+            }
+            return false;
+        };
+        friend etk::CCout& operator <<( etk::CCout &os,const self_type& obj);
     };
 
 
