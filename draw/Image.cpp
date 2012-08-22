@@ -120,6 +120,71 @@ draw::Image::~Image(void)
 	}
 }
 
+void draw::Image::Resize(Vector2D<int32_t> size)
+{
+	if (NULL != m_renderArea) {
+		delete(m_renderArea);
+		m_renderArea = NULL;
+	}
+	if (NULL != m_renderBase) {
+		delete(m_renderBase);
+		m_renderBase = NULL;
+	}
+	if (NULL != m_pixFrame) {
+		delete(m_pixFrame);
+		m_pixFrame = NULL;
+	}
+	if (NULL != m_renderingBuffer) {
+		delete(m_renderingBuffer);
+		m_renderingBuffer = NULL;
+	}
+	m_size = size;
+	// basic element :
+	draw::Color tmpBg(0,0,0,0);
+	// preallocate data with a basic bg elements :
+	m_data.ReSize(m_size.x*m_size.y, tmpBg);
+	if (m_size.x*m_size.y > m_data.Size()) {
+		DRAW_ERROR("Allocation of data buffer in error");
+		return;
+	}
+	// Allocate the AGG renderer system :
+	m_renderingBuffer = new agg::rendering_buffer((uint8_t*)&m_data[0], m_size.x, m_size.y, m_size.x*sizeof(draw::Color));
+	if (NULL == m_renderingBuffer) {
+		DRAW_ERROR("Allocation of the m_renderingBuffer for SVG drawing error");
+		return;
+	}
+	
+	m_pixFrame = new agg::pixfmt_rgba32(*m_renderingBuffer);
+	if (NULL == m_pixFrame) {
+		DRAW_ERROR("Allocation of the m_pixFrame for Image system error");
+		delete(m_renderingBuffer);
+		m_renderingBuffer = NULL;
+		return;
+	}
+	
+	m_renderBase = new rendererBase_t(*m_pixFrame);
+	if (NULL == m_renderBase) {
+		DRAW_ERROR("Allocation of the m_renderBase for Image system error");
+		delete(m_pixFrame);
+		m_pixFrame = NULL;
+		delete(m_renderingBuffer);
+		m_renderingBuffer = NULL;
+		return;
+	}
+	
+	m_renderArea = new rendererSolid_t(*m_renderBase);
+	if (NULL == m_renderArea) {
+		DRAW_ERROR("Allocation of the m_renderArea for Image system error");
+		delete(m_renderArea);
+		m_renderArea = NULL;
+		delete(m_pixFrame);
+		m_pixFrame = NULL;
+		delete(m_renderingBuffer);
+		m_renderingBuffer = NULL;
+		return;
+	}
+}
+
 
 void draw::Image::Begin(void)
 {

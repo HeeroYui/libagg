@@ -22,8 +22,8 @@
  *******************************************************************************
  */
 
-#ifndef __EWOL_IMAGE_H__
-#define __EWOL_IMAGE_H__
+#ifndef __DRAW_IMAGE_H__
+#define __DRAW_IMAGE_H__
 
 #include <etk/Types.h>
 #include <etk/Vector.h>
@@ -80,7 +80,7 @@ namespace draw
 		// -- basic tools :
 		// -----------------------------------------------
 		public :
-			//void Resize(Vector2D<int32_t> size);
+			void Resize(Vector2D<int32_t> size);
 			//void Resize(Vector2D<int32_t> startPos, Vector2D<int32_t> size);
 			
 			Vector2D<int32_t> GetSize(void) const
