@@ -126,8 +126,8 @@ namespace draw
 			
 			void Set(Vector2D<int32_t> pos, draw::Color newColor)
 			{
-				if(    pos.x>0 && pos.x<m_size.x
-				    && pos.y>0 && pos.y<m_size.y) {
+				if(    pos.x>=0 && pos.x<m_size.x
+				    && pos.y>=0 && pos.y<m_size.y) {
 					m_data[pos.x+pos.y*m_size.x] = newColor;
 				}
 			}
