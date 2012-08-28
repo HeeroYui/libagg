@@ -33,6 +33,40 @@ namespace agg {
 namespace draw {
 	typedef struct agg::rgba8  Color;
 	
+	class Colorf
+	{
+		public :
+			float r,g,b,a;
+			
+			Colorf(void) :
+				r(0.0),
+				g(0.0),
+				b(0.0),
+				a(0.0)
+			{
+				
+			}
+			Colorf(draw::Color& _input)
+			{
+				r = (float)_input.r / 255.0;
+				g = (float)_input.g / 255.0;
+				b = (float)_input.b / 255.0;
+				a = (float)_input.a / 255.0;
+			}
+			~Colorf(void)
+			{
+				
+			}
+			Colorf & operator=(const draw::Color& _input)
+			{
+				r = (float)_input.r / 255.0;
+				g = (float)_input.g / 255.0;
+				b = (float)_input.b / 255.0;
+				a = (float)_input.a / 255.0;
+				return *this;
+			};
+	};
+	
 	void ParseColor(const char* _input, struct agg::rgba8& color);
 	
 	
