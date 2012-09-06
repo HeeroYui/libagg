@@ -259,3 +259,98 @@ void draw::Image::Disc(Vector2D<float> pos, float radius, float angleStart, floa
 	
 }
 
+void GenerateSDF( Grid &g )
+{
+	// Pass 0
+	Vector2D<int32_t> tmpPos;
+	for (tmpPos.y=1 ; tmpPos.y<g.m_size.y-1 ; tmpPos.y++) {
+		for (tmpPos.x=1 ; tmpPos.x<g.m_size.x-1 ; tmpPos.x++) {
+			Vector2D<int32_t> p = g.Get(tmpPos);
+			g.Compare(p, tmpPos, -1,  0 );
+			g.Compare(p, tmpPos,  0, -1 );
+			g.Compare(p, tmpPos, -1, -1 );
+			g.Compare(p, tmpPos,  1, -1 );
+			g.Set(tmpPos, p);
+		}
+		for (tmpPos.x=g.m_size.x-2 ; tmpPos.x>0 ; tmpPos.x--) {
+			Vector2D<int32_t> p = g.Get(tmpPos);
+			g.Compare(p, tmpPos, 1, 0 );
+			g.Set(tmpPos, p );
+		}
+	}
+	// Pass 1
+	for (tmpPos.y=g.m_size.y-2 ; tmpPos.y>0 ; tmpPos.y--) {
+		for (tmpPos.x=g.m_size.x-2 ; tmpPos.x>0 ; tmpPos.x--) {
+			Vector2D<int32_t> p = g.Get(tmpPos);
+			g.Compare(p, tmpPos,  1,  0 );
+			g.Compare(p, tmpPos,  0,  1 );
+			g.Compare(p, tmpPos, -1,  1 );
+			g.Compare(p, tmpPos,  1,  1 );
+			g.Set(tmpPos, p);
+		}
+		for (tmpPos.x=1 ; tmpPos.x<g.m_size.x-1 ; tmpPos.x++) {
+			Vector2D<int32_t> p = g.Get(tmpPos);
+			g.Compare(p, tmpPos, -1,  0 );
+			g.Set(tmpPos, p);
+		}
+	}
+}
+
+// see : http://www.codersnotes.com/notes/signed-distance-fields
+
+void draw::Image::DistanceField(void)
+{
+	DistanceField(Vector2D<int32_t>(0,0), m_size);
+}
+void draw::Image::DistanceField(Vector2D<int32_t> pos, Vector2D<int32_t> size)
+{
+	Grid grid1(size);
+	Grid grid2(size);
+	grid1.SetOutsideVal(50);
+	grid2.SetOutsideVal(50);
+	
+	Vector2D<int32_t> tmpPos;
+	for(tmpPos.y=0 ; tmpPos.y<size.x ; tmpPos.y++ ) {
+		for(tmpPos.x=0 ; tmpPos.x<size.y ; tmpPos.x++ ) {
+			draw::Color tmpColor = Get(pos+tmpPos);
+			// Points inside get marked with a x/y of zero.
+			// Points outside get marked with an infinitely large distance.
+			if (tmpColor.a<=0x7F) {
+				grid1.SetInide(tmpPos);
+				grid2.SetOutside(tmpPos);
+			} else {
+				grid2.SetInide(tmpPos);
+				grid1.SetOutside(tmpPos);
+			}
+		}
+	}
+	
+	// Generate the SDF:
+	GenerateSDF( grid1 );
+	GenerateSDF( grid2 );
+	
+	for(tmpPos.y=0 ; tmpPos.y<size.x ; tmpPos.y++ ) {
+		for(tmpPos.x=0 ; tmpPos.x<size.y ; tmpPos.x++ ) {
+			Vector2D<int32_t> elem1 = grid1.Get(tmpPos);
+			Vector2D<int32_t> elem2 = grid2.Get(tmpPos);
+			// Calculate the actual distance from the x/y
+			float dist1 = sqrt( (double)elem1.QuadDist() );
+			float dist2 = sqrt( (double)elem2.QuadDist() );
+			float dist = dist1 - dist2;
+			/*
+			if (tmpPos.y < 32) {
+				if (tmpPos.x < 32) {
+					DRAW_DEBUG( "generate Distance : " << dist1 << "," << dist2 << " ==> " << (dist*3 + 128));
+				} else if (tmpPos.x == 32) {
+					DRAW_DEBUG( " ---" );
+				}
+			}
+			*/
+			draw::Color tmpColor = Get(pos+tmpPos);
+			// Clamp and scale it, just for display purposes.
+			tmpColor.a = etk_avg(0, (dist*3 + 128), 255);
+			Set(pos+tmpPos, tmpColor);
+		}
+	}
+}
+
