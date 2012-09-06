@@ -50,10 +50,12 @@ class Grid
 		Vector2D<int32_t>               m_size;
 		etk::Vector<Vector2D<int32_t> > m_data;
 		int32_t                         m_outsideVal;
+		int32_t                         m_errorVal;
 		Grid(Vector2D<int32_t> size)
 		{
 			m_size = size;
 			m_outsideVal = 20;
+			m_errorVal = 0;
 			// basic element :
 			Vector2D<int32_t> tmpPoint(0,0);
 			// preallocate data with a basic bg elements :
@@ -63,6 +65,10 @@ class Grid
 		void SetOutsideVal(int32_t newVal)
 		{
 			m_outsideVal = newVal;
+		}
+		void SetErrorVal(int32_t newVal)
+		{
+			m_errorVal = newVal;
 		}
 		void SetInide(Vector2D<int32_t> pos)
 		{
@@ -88,7 +94,7 @@ class Grid
 			    && pos.y>0 && pos.y<m_size.y) {
 				return m_data[pos.x+pos.y*m_size.x];
 			}
-			return Vector2D<int32_t>(0,0);
+			return Vector2D<int32_t>(m_errorVal,m_errorVal);
 		};
 		
 		void Set(Vector2D<int32_t> pos, Vector2D<int32_t> val)
@@ -238,6 +244,8 @@ namespace draw
 			// generate the distant field from the alpha value of the Image
 			void DistanceField(void);
 			void DistanceField(Vector2D<int32_t> pos, Vector2D<int32_t> size);
+			
+			void SaveFile(const char * file) {};
 		private:
 			
 			

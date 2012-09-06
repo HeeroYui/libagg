@@ -306,12 +306,14 @@ void draw::Image::DistanceField(Vector2D<int32_t> pos, Vector2D<int32_t> size)
 {
 	Grid grid1(size);
 	Grid grid2(size);
-	grid1.SetOutsideVal(50);
-	grid2.SetOutsideVal(50);
+	grid1.SetOutsideVal(500000);
+	grid2.SetOutsideVal(500000);
+	grid1.SetErrorVal(0);
+	grid2.SetErrorVal(500000);
 	
 	Vector2D<int32_t> tmpPos;
-	for(tmpPos.y=0 ; tmpPos.y<size.x ; tmpPos.y++ ) {
-		for(tmpPos.x=0 ; tmpPos.x<size.y ; tmpPos.x++ ) {
+	for(tmpPos.y=0 ; tmpPos.y<size.y ; tmpPos.y++ ) {
+		for(tmpPos.x=0 ; tmpPos.x<size.x ; tmpPos.x++ ) {
 			draw::Color tmpColor = Get(pos+tmpPos);
 			// Points inside get marked with a x/y of zero.
 			// Points outside get marked with an infinitely large distance.
@@ -329,8 +331,8 @@ void draw::Image::DistanceField(Vector2D<int32_t> pos, Vector2D<int32_t> size)
 	GenerateSDF( grid1 );
 	GenerateSDF( grid2 );
 	
-	for(tmpPos.y=0 ; tmpPos.y<size.x ; tmpPos.y++ ) {
-		for(tmpPos.x=0 ; tmpPos.x<size.y ; tmpPos.x++ ) {
+	for(tmpPos.y=0 ; tmpPos.y<size.y ; tmpPos.y++ ) {
+		for(tmpPos.x=0 ; tmpPos.x<size.x ; tmpPos.x++ ) {
 			Vector2D<int32_t> elem1 = grid1.Get(tmpPos);
 			Vector2D<int32_t> elem2 = grid2.Get(tmpPos);
 			// Calculate the actual distance from the x/y
