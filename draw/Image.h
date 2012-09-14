@@ -42,8 +42,70 @@
 #include <agg/agg_color_rgba.h>
 #include <agg/agg_pixfmt_rgba.h>
 
+#define BASIC_GRADIENT
 
-
+#ifndef BASIC_GRADIENT
+class Grid
+{
+	public:
+		Vector2D<int32_t>     m_size;
+		etk::Vector<int32_t > m_data;
+		int32_t               m_outsideVal;
+		int32_t               m_errorVal;
+		Grid(Vector2D<int32_t> size)
+		{
+			m_size = size;
+			m_outsideVal = 20;
+			m_errorVal = 0;
+			// basic element :
+			int32_t tmpPoint = 0;
+			// preallocate data with a basic bg elements :
+			m_data.ReSize(m_size.x*m_size.y, tmpPoint);
+		};
+		~Grid(void) { };
+		void SetOutsideVal(int32_t newVal)
+		{
+			m_outsideVal = newVal;
+		}
+		void SetErrorVal(int32_t newVal)
+		{
+			m_errorVal = newVal;
+		}
+		void SetInide(Vector2D<int32_t> pos)
+		{
+			if(    pos.x>=0 && pos.x<m_size.x
+			    && pos.y>=0 && pos.y<m_size.y) {
+				m_data[pos.x+pos.y*m_size.x]=0;
+			}
+		};
+		void SetOutside(Vector2D<int32_t> pos)
+		{
+			if(    pos.x>=0 && pos.x<m_size.x
+			    && pos.y>=0 && pos.y<m_size.y) {
+				m_data[pos.x+pos.y*m_size.x]=m_outsideVal;
+			}
+		};
+		
+		int32_t Get(Vector2D<int32_t> pos)
+		{
+			;
+			if(    pos.x>0 && pos.x<m_size.x
+			    && pos.y>0 && pos.y<m_size.y) {
+				return m_data[pos.x+pos.y*m_size.x];
+			}
+			return m_errorVal;
+		};
+		
+		void Set(Vector2D<int32_t> pos, int32_t val)
+		{
+			if(    pos.x>0 && pos.x<m_size.x
+			    && pos.y>0 && pos.y<m_size.y) {
+				m_data[pos.x+pos.y*m_size.x] = val;
+			}
+		};
+		
+};
+#else
 class Grid
 {
 	public:
@@ -72,37 +134,36 @@ class Grid
 		}
 		void SetInide(Vector2D<int32_t> pos)
 		{
-			if(    pos.x>=0 && pos.x<m_size.x
-			    && pos.y>=0 && pos.y<m_size.y) {
+			//if(    pos.x>=0 && pos.x<m_size.x
+			//    && pos.y>=0 && pos.y<m_size.y) {
 				m_data[pos.x+pos.y*m_size.x].x=0;
 				m_data[pos.x+pos.y*m_size.x].y=0;
-			}
+			//}
 		};
 		void SetOutside(Vector2D<int32_t> pos)
 		{
-			if(    pos.x>=0 && pos.x<m_size.x
-			    && pos.y>=0 && pos.y<m_size.y) {
+			//if(    pos.x>=0 && pos.x<m_size.x
+			//    && pos.y>=0 && pos.y<m_size.y) {
 				m_data[pos.x+pos.y*m_size.x].x=m_outsideVal;
 				m_data[pos.x+pos.y*m_size.x].y=m_outsideVal;
-			}
+			//}
 		};
 		
 		Vector2D<int32_t> Get(Vector2D<int32_t> pos)
 		{
-			;
-			if(    pos.x>0 && pos.x<m_size.x
-			    && pos.y>0 && pos.y<m_size.y) {
+			//if(    pos.x>0 && pos.x<m_size.x
+			//    && pos.y>0 && pos.y<m_size.y) {
 				return m_data[pos.x+pos.y*m_size.x];
-			}
-			return Vector2D<int32_t>(m_errorVal,m_errorVal);
+			//}
+			//return Vector2D<int32_t>(m_errorVal,m_errorVal);
 		};
 		
 		void Set(Vector2D<int32_t> pos, Vector2D<int32_t> val)
 		{
-			if(    pos.x>0 && pos.x<m_size.x
-			    && pos.y>0 && pos.y<m_size.y) {
+			//if(    pos.x>0 && pos.x<m_size.x
+			//    && pos.y>0 && pos.y<m_size.y) {
 				m_data[pos.x+pos.y*m_size.x] = val;
-			}
+			//}
 		};
 		
 		void Compare(Vector2D<int32_t> &p, Vector2D<int32_t> pos, int32_t offsetx, int32_t offsety )
@@ -112,13 +173,13 @@ class Grid
 			Vector2D<int32_t> other = Get(pos);
 			other.x += offsetx;
 			other.y += offsety;
-			
 			if (other.QuadDist() < p.QuadDist()) {
 				p = other;
 			}
 		};
+		void GenerateSDF(void);
 };
-
+#endif
 
 
 namespace draw
@@ -243,7 +304,7 @@ namespace draw
 			void Disc(Vector2D<float> pos, float radius, float angleStart=0, float angleStop=2*M_PI);
 			// generate the distant field from the alpha value of the Image
 			void DistanceField(void);
-			void DistanceField(Vector2D<int32_t> pos, Vector2D<int32_t> size);
+			void DistanceField(Vector2D<int32_t> pos, Vector2D<int32_t> size, int32_t upscaler=1, int32_t startPos=0);
 			
 			void SaveFile(const char * file) {};
 		private:

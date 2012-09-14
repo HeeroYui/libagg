@@ -258,40 +258,41 @@ void draw::Image::Disc(Vector2D<float> pos, float radius, float angleStart, floa
 {
 	
 }
+#ifdef BASIC_GRADIENT
 
-void GenerateSDF( Grid &g )
+void Grid::GenerateSDF()
 {
 	// Pass 0
 	Vector2D<int32_t> tmpPos;
-	for (tmpPos.y=1 ; tmpPos.y<g.m_size.y-1 ; tmpPos.y++) {
-		for (tmpPos.x=1 ; tmpPos.x<g.m_size.x-1 ; tmpPos.x++) {
-			Vector2D<int32_t> p = g.Get(tmpPos);
-			g.Compare(p, tmpPos, -1,  0 );
-			g.Compare(p, tmpPos,  0, -1 );
-			g.Compare(p, tmpPos, -1, -1 );
-			g.Compare(p, tmpPos,  1, -1 );
-			g.Set(tmpPos, p);
+	for (tmpPos.y=1 ; tmpPos.y<m_size.y-1 ; tmpPos.y++) {
+		for (tmpPos.x=1 ; tmpPos.x<m_size.x-1 ; tmpPos.x++) {
+			Vector2D<int32_t> p = Get(tmpPos);
+			Compare(p, tmpPos, -1,  0 );
+			Compare(p, tmpPos,  0, -1 );
+			Compare(p, tmpPos, -1, -1 );
+			Compare(p, tmpPos,  1, -1 );
+			Set(tmpPos, p);
 		}
-		for (tmpPos.x=g.m_size.x-2 ; tmpPos.x>0 ; tmpPos.x--) {
-			Vector2D<int32_t> p = g.Get(tmpPos);
-			g.Compare(p, tmpPos, 1, 0 );
-			g.Set(tmpPos, p );
+		for (tmpPos.x=m_size.x-2 ; tmpPos.x>0 ; tmpPos.x--) {
+			Vector2D<int32_t> p = Get(tmpPos);
+			Compare(p, tmpPos, 1, 0 );
+			Set(tmpPos, p );
 		}
 	}
 	// Pass 1
-	for (tmpPos.y=g.m_size.y-2 ; tmpPos.y>0 ; tmpPos.y--) {
-		for (tmpPos.x=g.m_size.x-2 ; tmpPos.x>0 ; tmpPos.x--) {
-			Vector2D<int32_t> p = g.Get(tmpPos);
-			g.Compare(p, tmpPos,  1,  0 );
-			g.Compare(p, tmpPos,  0,  1 );
-			g.Compare(p, tmpPos, -1,  1 );
-			g.Compare(p, tmpPos,  1,  1 );
-			g.Set(tmpPos, p);
+	for (tmpPos.y=m_size.y-2 ; tmpPos.y>0 ; tmpPos.y--) {
+		for (tmpPos.x=m_size.x-2 ; tmpPos.x>1 ; tmpPos.x--) {
+			Vector2D<int32_t> p = Get(tmpPos);
+			Compare(p, tmpPos,  1,  0 );
+			Compare(p, tmpPos,  0,  1 );
+			Compare(p, tmpPos, -1,  1 );
+			Compare(p, tmpPos,  1,  1 );
+			Set(tmpPos, p);
 		}
-		for (tmpPos.x=1 ; tmpPos.x<g.m_size.x-1 ; tmpPos.x++) {
-			Vector2D<int32_t> p = g.Get(tmpPos);
-			g.Compare(p, tmpPos, -1,  0 );
-			g.Set(tmpPos, p);
+		for (tmpPos.x=1 ; tmpPos.x<m_size.x-1 ; tmpPos.x++) {
+			Vector2D<int32_t> p = Get(tmpPos);
+			Compare(p, tmpPos, -1,  0 );
+			Set(tmpPos, p);
 		}
 	}
 }
@@ -302,8 +303,69 @@ void draw::Image::DistanceField(void)
 {
 	DistanceField(Vector2D<int32_t>(0,0), m_size);
 }
-void draw::Image::DistanceField(Vector2D<int32_t> pos, Vector2D<int32_t> size)
+#endif
+
+#define META_DIST   (8)
+void draw::Image::DistanceField(Vector2D<int32_t> pos, Vector2D<int32_t> size, int32_t upscaler, int32_t startPos)
 {
+	#ifndef BASIC_GRADIENT
+	float maxVal = 1/(1000.0*sqrt(META_DIST*META_DIST+META_DIST*META_DIST));
+	Vector2D<int32_t> tmpPos;
+	// generate distance system ... matrix ...
+	Grid grid2(Vector2D<int32_t>(META_DIST*2,META_DIST*2));
+	for(tmpPos.y=0 ; tmpPos.y<META_DIST*2 ; tmpPos.y++ ) {
+		for(tmpPos.x=0 ; tmpPos.x<META_DIST*2 ; tmpPos.x++ ) {
+			int32_t val = 1000.0*sqrt((tmpPos.x-META_DIST)*(tmpPos.x-META_DIST) + (tmpPos.y-META_DIST)*(tmpPos.y-META_DIST));
+			grid2.Set(tmpPos, val);
+		}
+	}
+	Grid grid1(size);
+	grid1.SetErrorVal(0);
+	
+	for(tmpPos.y=0 ; tmpPos.y<size.y ; tmpPos.y++ ) {
+		for(tmpPos.x=0 ; tmpPos.x<size.x ; tmpPos.x++ ) {
+			draw::Color tmpColor = Get(pos+tmpPos);
+			// Points inside get marked with a x/y of zero.
+			// Points outside get marked with an infinitely large distance.
+			if (tmpColor.a<=0x7F) {
+				grid1.SetInide(tmpPos);
+			} else {
+				grid1.SetOutside(tmpPos);
+			}
+		}
+	}
+	for(tmpPos.y=startPos ; tmpPos.y<size.y ; tmpPos.y+=upscaler ) {
+		for(tmpPos.x=startPos ; tmpPos.x<size.x ; tmpPos.x+=upscaler ) {
+			int32_t insideOrOutsideCurrentPixel = grid1.Get(tmpPos);
+			// when out no distance find ...
+			grid1.SetErrorVal(insideOrOutsideCurrentPixel);
+			
+			Vector2D<int32_t> tmpPos2;
+			int32_t newDist = 50000000;
+			for(tmpPos2.y=-META_DIST ; tmpPos2.y<META_DIST ; tmpPos2.y++ ) {
+				for(tmpPos2.x=-META_DIST ; tmpPos2.x<META_DIST ; tmpPos2.x++ ) {
+					// we have an opposite factor ...
+					if (insideOrOutsideCurrentPixel != grid1.Get(tmpPos+tmpPos2)) {
+						// get new distance
+						int32_t tmpDist = grid2.Get(tmpPos2 + Vector2D<int32_t>(META_DIST,META_DIST));
+						if (newDist > tmpDist) {
+							newDist = tmpDist;
+						}
+					}
+				}
+			}
+			// set the finded distance :
+			draw::Color tmpColor = Get(pos+tmpPos);
+			float tmpValue = ((1.0-((float)newDist * maxVal)) * 0.5) * 128.0;
+			if (tmpColor.a<=0x7F) {
+				tmpColor.a = etk_avg(0, tmpValue, 255);
+			} else {
+				tmpColor.a = etk_avg(0, 255-tmpValue, 255);
+			}
+			Set(pos+tmpPos, tmpColor);
+		}
+	}
+	#else
 	Grid grid1(size);
 	Grid grid2(size);
 	grid1.SetOutsideVal(500000);
@@ -326,13 +388,12 @@ void draw::Image::DistanceField(Vector2D<int32_t> pos, Vector2D<int32_t> size)
 			}
 		}
 	}
-	
 	// Generate the SDF:
-	GenerateSDF( grid1 );
-	GenerateSDF( grid2 );
+	grid1.GenerateSDF();
+	grid2.GenerateSDF();
 	
-	for(tmpPos.y=0 ; tmpPos.y<size.y ; tmpPos.y++ ) {
-		for(tmpPos.x=0 ; tmpPos.x<size.x ; tmpPos.x++ ) {
+	for(tmpPos.y=startPos ; tmpPos.y<size.y ; tmpPos.y+=upscaler ) {
+		for(tmpPos.x=startPos ; tmpPos.x<size.x ; tmpPos.x+=upscaler ) {
 			Vector2D<int32_t> elem1 = grid1.Get(tmpPos);
 			Vector2D<int32_t> elem2 = grid2.Get(tmpPos);
 			// Calculate the actual distance from the x/y
@@ -354,5 +415,6 @@ void draw::Image::DistanceField(Vector2D<int32_t> pos, Vector2D<int32_t> size)
 			Set(pos+tmpPos, tmpColor);
 		}
 	}
+	#endif
 }
 
