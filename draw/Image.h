@@ -299,6 +299,7 @@ namespace draw
 			void Draw(void);
 			
 			void Line(Vector2D<float> posStart, Vector2D<float> posEnd);
+			void Dot(Vector2D<float> pos);
 			void Rectangle(Vector2D<float> pos, Vector2D<float> size);
 			void Circle(Vector2D<float> pos, float radius, float angleStart=0, float angleStop=2*M_PI);
 			void Disc(Vector2D<float> pos, float radius, float angleStart=0, float angleStop=2*M_PI);
