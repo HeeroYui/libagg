@@ -228,10 +228,13 @@ void draw::Image::Draw(void)
 
 void draw::Image::Dot(Vector2D<float> pos)
 {
-	Begin();
-	MoveTo(pos);
-	LineTo(pos+Vector2D<float>(1,1));
-	End();
+	/*
+		Begin();
+		MoveTo(pos);
+		LineTo(pos+Vector2D<float>(1,1));
+		End();
+	*/
+	Set(pos, m_fillColor);
 }
 
 void draw::Image::Line(Vector2D<float> posStart, Vector2D<float> posEnd)
