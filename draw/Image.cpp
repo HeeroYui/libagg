@@ -39,7 +39,7 @@ draw::Image::Image(void) :
 	Init();
 }
 
-draw::Image::Image(Vector2D<int32_t> size) :
+draw::Image::Image(etk::Vector2D<int32_t> size) :
 	m_renderingBuffer(NULL),
 	m_pixFrame(NULL),
 	m_renderBase(NULL),
@@ -120,7 +120,7 @@ draw::Image::~Image(void)
 	}
 }
 
-void draw::Image::Resize(Vector2D<int32_t> size)
+void draw::Image::Resize(etk::Vector2D<int32_t> size)
 {
 	if (NULL != m_renderArea) {
 		delete(m_renderArea);
@@ -196,22 +196,22 @@ void draw::Image::End(void)
 	
 }
 
-void draw::Image::MoveTo(Vector2D<float> pos)
+void draw::Image::MoveTo(etk::Vector2D<float> pos)
 {
 	
 }
 
-void draw::Image::MoveToAbs(Vector2D<float> pos)
+void draw::Image::MoveToAbs(etk::Vector2D<float> pos)
 {
 	
 }
 
-void draw::Image::LineTo(Vector2D<float> pos)
+void draw::Image::LineTo(etk::Vector2D<float> pos)
 {
 	
 }
 
-void draw::Image::LineToAbs(Vector2D<float> pos)
+void draw::Image::LineToAbs(etk::Vector2D<float> pos)
 {
 	
 }
@@ -226,18 +226,18 @@ void draw::Image::Draw(void)
 	
 }
 
-void draw::Image::Dot(Vector2D<float> pos)
+void draw::Image::Dot(etk::Vector2D<float> pos)
 {
 	/*
 		Begin();
 		MoveTo(pos);
-		LineTo(pos+Vector2D<float>(1,1));
+		LineTo(pos+etk::Vector2D<float>(1,1));
 		End();
 	*/
 	Set(pos, m_fillColor);
 }
 
-void draw::Image::Line(Vector2D<float> posStart, Vector2D<float> posEnd)
+void draw::Image::Line(etk::Vector2D<float> posStart, etk::Vector2D<float> posEnd)
 {
 	Begin();
 	MoveTo(posStart);
@@ -245,10 +245,10 @@ void draw::Image::Line(Vector2D<float> posStart, Vector2D<float> posEnd)
 	End();
 }
 
-void draw::Image::Rectangle(Vector2D<float> pos, Vector2D<float> size)
+void draw::Image::Rectangle(etk::Vector2D<float> pos, etk::Vector2D<float> size)
 {
 	Begin();
-	Vector2D<float> tmp = pos;
+	etk::Vector2D<float> tmp = pos;
 	MoveTo(pos);
 	tmp.x += size.x;
 	LineTo(tmp);
@@ -260,12 +260,12 @@ void draw::Image::Rectangle(Vector2D<float> pos, Vector2D<float> size)
 	End();
 }
 
-void draw::Image::Circle(Vector2D<float> pos, float radius, float angleStart, float angleStop)
+void draw::Image::Circle(etk::Vector2D<float> pos, float radius, float angleStart, float angleStop)
 {
 	
 }
 
-void draw::Image::Disc(Vector2D<float> pos, float radius, float angleStart, float angleStop)
+void draw::Image::Disc(etk::Vector2D<float> pos, float radius, float angleStart, float angleStop)
 {
 	
 }
@@ -274,10 +274,10 @@ void draw::Image::Disc(Vector2D<float> pos, float radius, float angleStart, floa
 void Grid::GenerateSDF()
 {
 	// Pass 0
-	Vector2D<int32_t> tmpPos;
+	etk::Vector2D<int32_t> tmpPos;
 	for (tmpPos.y=1 ; tmpPos.y<m_size.y-1 ; tmpPos.y++) {
 		for (tmpPos.x=1 ; tmpPos.x<m_size.x-1 ; tmpPos.x++) {
-			Vector2D<int32_t> p = Get(tmpPos);
+			etk::Vector2D<int32_t> p = Get(tmpPos);
 			Compare(p, tmpPos, -1,  0 );
 			Compare(p, tmpPos,  0, -1 );
 			Compare(p, tmpPos, -1, -1 );
@@ -285,7 +285,7 @@ void Grid::GenerateSDF()
 			Set(tmpPos, p);
 		}
 		for (tmpPos.x=m_size.x-2 ; tmpPos.x>0 ; tmpPos.x--) {
-			Vector2D<int32_t> p = Get(tmpPos);
+			etk::Vector2D<int32_t> p = Get(tmpPos);
 			Compare(p, tmpPos, 1, 0 );
 			Set(tmpPos, p );
 		}
@@ -293,7 +293,7 @@ void Grid::GenerateSDF()
 	// Pass 1
 	for (tmpPos.y=m_size.y-2 ; tmpPos.y>0 ; tmpPos.y--) {
 		for (tmpPos.x=m_size.x-2 ; tmpPos.x>1 ; tmpPos.x--) {
-			Vector2D<int32_t> p = Get(tmpPos);
+			etk::Vector2D<int32_t> p = Get(tmpPos);
 			Compare(p, tmpPos,  1,  0 );
 			Compare(p, tmpPos,  0,  1 );
 			Compare(p, tmpPos, -1,  1 );
@@ -301,7 +301,7 @@ void Grid::GenerateSDF()
 			Set(tmpPos, p);
 		}
 		for (tmpPos.x=1 ; tmpPos.x<m_size.x-1 ; tmpPos.x++) {
-			Vector2D<int32_t> p = Get(tmpPos);
+			etk::Vector2D<int32_t> p = Get(tmpPos);
 			Compare(p, tmpPos, -1,  0 );
 			Set(tmpPos, p);
 		}
@@ -312,18 +312,18 @@ void Grid::GenerateSDF()
 
 void draw::Image::DistanceField(void)
 {
-	DistanceField(Vector2D<int32_t>(0,0), m_size);
+	DistanceField(etk::Vector2D<int32_t>(0,0), m_size);
 }
 #endif
 
 #define META_DIST   (8)
-void draw::Image::DistanceField(Vector2D<int32_t> pos, Vector2D<int32_t> size, int32_t upscaler, int32_t startPos)
+void draw::Image::DistanceField(etk::Vector2D<int32_t> pos, etk::Vector2D<int32_t> size, int32_t upscaler, int32_t startPos)
 {
 	#ifndef BASIC_GRADIENT
 	float maxVal = 1/(1000.0*sqrt(META_DIST*META_DIST+META_DIST*META_DIST));
-	Vector2D<int32_t> tmpPos;
+	etk::Vector2D<int32_t> tmpPos;
 	// generate distance system ... matrix ...
-	Grid grid2(Vector2D<int32_t>(META_DIST*2,META_DIST*2));
+	Grid grid2(etk::Vector2D<int32_t>(META_DIST*2,META_DIST*2));
 	for(tmpPos.y=0 ; tmpPos.y<META_DIST*2 ; tmpPos.y++ ) {
 		for(tmpPos.x=0 ; tmpPos.x<META_DIST*2 ; tmpPos.x++ ) {
 			int32_t val = 1000.0*sqrt((tmpPos.x-META_DIST)*(tmpPos.x-META_DIST) + (tmpPos.y-META_DIST)*(tmpPos.y-META_DIST));
@@ -351,14 +351,14 @@ void draw::Image::DistanceField(Vector2D<int32_t> pos, Vector2D<int32_t> size, i
 			// when out no distance find ...
 			grid1.SetErrorVal(insideOrOutsideCurrentPixel);
 			
-			Vector2D<int32_t> tmpPos2;
+			etk::Vector2D<int32_t> tmpPos2;
 			int32_t newDist = 50000000;
 			for(tmpPos2.y=-META_DIST ; tmpPos2.y<META_DIST ; tmpPos2.y++ ) {
 				for(tmpPos2.x=-META_DIST ; tmpPos2.x<META_DIST ; tmpPos2.x++ ) {
 					// we have an opposite factor ...
 					if (insideOrOutsideCurrentPixel != grid1.Get(tmpPos+tmpPos2)) {
 						// get new distance
-						int32_t tmpDist = grid2.Get(tmpPos2 + Vector2D<int32_t>(META_DIST,META_DIST));
+						int32_t tmpDist = grid2.Get(tmpPos2 + etk::Vector2D<int32_t>(META_DIST,META_DIST));
 						if (newDist > tmpDist) {
 							newDist = tmpDist;
 						}
@@ -384,7 +384,7 @@ void draw::Image::DistanceField(Vector2D<int32_t> pos, Vector2D<int32_t> size, i
 	grid1.SetErrorVal(0);
 	grid2.SetErrorVal(500000);
 	
-	Vector2D<int32_t> tmpPos;
+	etk::Vector2D<int32_t> tmpPos;
 	for(tmpPos.y=0 ; tmpPos.y<size.y ; tmpPos.y++ ) {
 		for(tmpPos.x=0 ; tmpPos.x<size.x ; tmpPos.x++ ) {
 			draw::Color tmpColor = Get(pos+tmpPos);
@@ -405,8 +405,8 @@ void draw::Image::DistanceField(Vector2D<int32_t> pos, Vector2D<int32_t> size, i
 	
 	for(tmpPos.y=startPos ; tmpPos.y<size.y ; tmpPos.y+=upscaler ) {
 		for(tmpPos.x=startPos ; tmpPos.x<size.x ; tmpPos.x+=upscaler ) {
-			Vector2D<int32_t> elem1 = grid1.Get(tmpPos);
-			Vector2D<int32_t> elem2 = grid2.Get(tmpPos);
+			etk::Vector2D<int32_t> elem1 = grid1.Get(tmpPos);
+			etk::Vector2D<int32_t> elem2 = grid2.Get(tmpPos);
 			// Calculate the actual distance from the x/y
 			float dist1 = sqrt( (double)elem1.QuadDist() );
 			float dist2 = sqrt( (double)elem2.QuadDist() );
