@@ -173,7 +173,7 @@ class Grid
 			etk::Vector2D<int32_t> other = Get(pos);
 			other.x += offsetx;
 			other.y += offsety;
-			if (other.QuadDist() < p.QuadDist()) {
+			if (other.GetSquaredLength() < p.GetSquaredLength()) {
 				p = other;
 			}
 		};

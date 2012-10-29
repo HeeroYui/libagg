@@ -408,8 +408,8 @@ void draw::Image::DistanceField(etk::Vector2D<int32_t> pos, etk::Vector2D<int32_
 			etk::Vector2D<int32_t> elem1 = grid1.Get(tmpPos);
 			etk::Vector2D<int32_t> elem2 = grid2.Get(tmpPos);
 			// Calculate the actual distance from the x/y
-			float dist1 = sqrt( (double)elem1.QuadDist() );
-			float dist2 = sqrt( (double)elem2.QuadDist() );
+			float dist1 = elem1.GetLength();
+			float dist2 = elem2.GetLength();
 			float dist = dist1 - dist2;
 			/*
 			if (tmpPos.y < 32) {
