@@ -22,7 +22,7 @@
  *******************************************************************************
  */
 
-#include <etk/Types.h>
+#include <etk/types.h>
 #include <etk/tool.h>
 #include <draw/Color.h>
 #include <draw/Debug.h>

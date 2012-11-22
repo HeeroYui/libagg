@@ -25,8 +25,9 @@
 #ifndef __DRAW_IMAGE_H__
 #define __DRAW_IMAGE_H__
 
-#include <etk/Types.h>
+#include <etk/types.h>
 #include <etk/Vector.h>
+#include <etk/math/Vector2D.h>
 #include <draw/Debug.h>
 #include <draw/Color.h>
 #include <agg/agg_pixfmt_rgba.h>
