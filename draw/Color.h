@@ -25,6 +25,7 @@
 #ifndef __ETK_COLOR_H__
 #define __ETK_COLOR_H__
 
+#include <etk/UString.h>
 #include <agg/agg_color_rgba.h>
 namespace agg {
 	etk::CCout& operator <<(etk::CCout &os, const  struct agg::rgba8& obj);
@@ -68,7 +69,8 @@ namespace draw {
 	};
 	
 	void ParseColor(const char* _input, struct agg::rgba8& color);
-	
+	etk::UString GetHexString(draw::Color& color);
+	etk::UString GetString(draw::Color& color);
 	
 	namespace color {
 		extern const Color none;

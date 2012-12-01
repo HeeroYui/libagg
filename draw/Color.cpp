@@ -478,3 +478,18 @@ etk::CCout& agg::operator <<(etk::CCout &os, const  struct agg::rgba8& obj)
 	os << tmpData;
 	return os;
 }
+
+
+etk::UString draw::GetHexString(draw::Color& color)
+{
+	char colorText[256];
+	sprintf(colorText, "0x%08X", color.Get());
+	return colorText;
+}
+
+etk::UString draw::GetString(draw::Color& color)
+{
+	char colorText[256];
+	sprintf(colorText, "#%08X", color.Get());
+	return colorText;
+}
