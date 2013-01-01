@@ -47,6 +47,13 @@ namespace draw {
 			{
 				
 			}
+			Colorf(float _r, float _g, float _b, float _a)
+			{
+				r = _r;
+				g = _g;
+				b = _b;
+				a = _a;
+			}
 			Colorf(draw::Color& _input)
 			{
 				r = (float)_input.r / 255.0;
@@ -64,6 +71,14 @@ namespace draw {
 				g = (float)_input.g / 255.0;
 				b = (float)_input.b / 255.0;
 				a = (float)_input.a / 255.0;
+				return *this;
+			};
+			Colorf & operator=(const draw::Colorf& _input)
+			{
+				r = _input.r;
+				g = _input.g;
+				b = _input.b;
+				a = _input.a;
 				return *this;
 			};
 	};
