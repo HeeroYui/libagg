@@ -34,12 +34,12 @@ draw::Image::Image(void) :
 	m_strokeColor(0,0,0,0),
 	m_strokeSize(0)
 {
-	m_size.x = 32;
-	m_size.y = 32;
+	m_size.setX(32);
+	m_size.setY(32);
 	Init();
 }
 
-draw::Image::Image(etk::Vector2D<int32_t> size) :
+draw::Image::Image(ivec2 size) :
 	m_renderingBuffer(NULL),
 	m_pixFrame(NULL),
 	m_renderBase(NULL),
@@ -57,13 +57,13 @@ void draw::Image::Init(void)
 	// basic element :
 	draw::Color tmpBg(0,0,0,0);
 	// preallocate data with a basic bg elements :
-	m_data.ReSize(m_size.x*m_size.y, tmpBg);
-	if (m_size.x*m_size.y > m_data.Size()) {
+	m_data.ReSize(m_size.x()*m_size.y(), tmpBg);
+	if (m_size.x()*m_size.y() > m_data.Size()) {
 		DRAW_ERROR("Allocation of data buffer in error");
 		return;
 	}
 	// Allocate the AGG renderer system :
-	m_renderingBuffer = new agg::rendering_buffer((uint8_t*)&m_data[0], m_size.x, m_size.y, m_size.x*sizeof(draw::Color));
+	m_renderingBuffer = new agg::rendering_buffer((uint8_t*)&m_data[0], m_size.x(), m_size.y(), m_size.x()*sizeof(draw::Color));
 	if (NULL == m_renderingBuffer) {
 		DRAW_ERROR("Allocation of the m_renderingBuffer for SVG drawing error");
 		return;
@@ -120,7 +120,7 @@ draw::Image::~Image(void)
 	}
 }
 
-void draw::Image::Resize(etk::Vector2D<int32_t> size)
+void draw::Image::Resize(ivec2 size)
 {
 	if (NULL != m_renderArea) {
 		delete(m_renderArea);
@@ -142,13 +142,13 @@ void draw::Image::Resize(etk::Vector2D<int32_t> size)
 	// basic element :
 	draw::Color tmpBg(0,0,0,0);
 	// preallocate data with a basic bg elements :
-	m_data.ReSize(m_size.x*m_size.y, tmpBg);
-	if (m_size.x*m_size.y > m_data.Size()) {
+	m_data.ReSize(m_size.x()*m_size.y(), tmpBg);
+	if (m_size.x()*m_size.y() > m_data.Size()) {
 		DRAW_ERROR("Allocation of data buffer in error");
 		return;
 	}
 	// Allocate the AGG renderer system :
-	m_renderingBuffer = new agg::rendering_buffer((uint8_t*)&m_data[0], m_size.x, m_size.y, m_size.x*sizeof(draw::Color));
+	m_renderingBuffer = new agg::rendering_buffer((uint8_t*)&m_data[0], m_size.x(), m_size.y(), m_size.x()*sizeof(draw::Color));
 	if (NULL == m_renderingBuffer) {
 		DRAW_ERROR("Allocation of the m_renderingBuffer for SVG drawing error");
 		return;
@@ -196,22 +196,22 @@ void draw::Image::End(void)
 	
 }
 
-void draw::Image::MoveTo(etk::Vector2D<float> pos)
+void draw::Image::MoveTo(vec2 pos)
 {
 	
 }
 
-void draw::Image::MoveToAbs(etk::Vector2D<float> pos)
+void draw::Image::MoveToAbs(vec2 pos)
 {
 	
 }
 
-void draw::Image::LineTo(etk::Vector2D<float> pos)
+void draw::Image::LineTo(vec2 pos)
 {
 	
 }
 
-void draw::Image::LineToAbs(etk::Vector2D<float> pos)
+void draw::Image::LineToAbs(vec2 pos)
 {
 	
 }
@@ -226,7 +226,7 @@ void draw::Image::Draw(void)
 	
 }
 
-void draw::Image::Dot(etk::Vector2D<float> pos)
+void draw::Image::Dot(vec2 pos)
 {
 	/*
 		Begin();
@@ -237,7 +237,7 @@ void draw::Image::Dot(etk::Vector2D<float> pos)
 	Set(pos, m_fillColor);
 }
 
-void draw::Image::Line(etk::Vector2D<float> posStart, etk::Vector2D<float> posEnd)
+void draw::Image::Line(vec2 posStart, vec2 posEnd)
 {
 	Begin();
 	MoveTo(posStart);
@@ -245,27 +245,27 @@ void draw::Image::Line(etk::Vector2D<float> posStart, etk::Vector2D<float> posEn
 	End();
 }
 
-void draw::Image::Rectangle(etk::Vector2D<float> pos, etk::Vector2D<float> size)
+void draw::Image::Rectangle(vec2 pos, vec2 size)
 {
 	Begin();
-	etk::Vector2D<float> tmp = pos;
+	vec2 tmp = pos;
 	MoveTo(pos);
-	tmp.x += size.x;
+	tmp += vec2(size.x(),0);
 	LineTo(tmp);
-	tmp.y += size.y;
+	tmp += vec2(0,size.y());
 	LineTo(tmp);
-	tmp.x -= size.x;
+	tmp -= vec2(size.x(),0);
 	LineTo(tmp);
 	Join();
 	End();
 }
 
-void draw::Image::Circle(etk::Vector2D<float> pos, float radius, float angleStart, float angleStop)
+void draw::Image::Circle(vec2 pos, float radius, float angleStart, float angleStop)
 {
 	
 }
 
-void draw::Image::Disc(etk::Vector2D<float> pos, float radius, float angleStart, float angleStop)
+void draw::Image::Disc(vec2 pos, float radius, float angleStart, float angleStop)
 {
 	
 }
@@ -274,34 +274,34 @@ void draw::Image::Disc(etk::Vector2D<float> pos, float radius, float angleStart,
 void Grid::GenerateSDF()
 {
 	// Pass 0
-	etk::Vector2D<int32_t> tmpPos;
-	for (tmpPos.y=1 ; tmpPos.y<m_size.y-1 ; tmpPos.y++) {
-		for (tmpPos.x=1 ; tmpPos.x<m_size.x-1 ; tmpPos.x++) {
-			etk::Vector2D<int32_t> p = Get(tmpPos);
+	ivec2 tmpPos(1,1);
+	for (tmpPos.setY(1) ; tmpPos.y()<m_size.y()-1 ; tmpPos+=vec2(0,1)) {
+		for (tmpPos.setX(1) ; tmpPos.x()<m_size.x()-1 ; tmpPos+=vec2(1,0) ) {
+			ivec2 p = Get(tmpPos);
 			Compare(p, tmpPos, -1,  0 );
 			Compare(p, tmpPos,  0, -1 );
 			Compare(p, tmpPos, -1, -1 );
 			Compare(p, tmpPos,  1, -1 );
 			Set(tmpPos, p);
 		}
-		for (tmpPos.x=m_size.x-2 ; tmpPos.x>0 ; tmpPos.x--) {
-			etk::Vector2D<int32_t> p = Get(tmpPos);
+		for (tmpPos.setX(m_size.x()-2) ; tmpPos.x()>0 ; tmpPos-=vec2(1,0) ) {
+			ivec2 p = Get(tmpPos);
 			Compare(p, tmpPos, 1, 0 );
 			Set(tmpPos, p );
 		}
 	}
 	// Pass 1
-	for (tmpPos.y=m_size.y-2 ; tmpPos.y>0 ; tmpPos.y--) {
-		for (tmpPos.x=m_size.x-2 ; tmpPos.x>1 ; tmpPos.x--) {
-			etk::Vector2D<int32_t> p = Get(tmpPos);
+	for (tmpPos.setY(m_size.y()-2) ; tmpPos.y()>0 ; tmpPos-=vec2(0,1)) {
+		for (tmpPos.setX(m_size.x()-2) ; tmpPos.x()>1 ; tmpPos-=vec2(1,0)) {
+			ivec2 p = Get(tmpPos);
 			Compare(p, tmpPos,  1,  0 );
 			Compare(p, tmpPos,  0,  1 );
 			Compare(p, tmpPos, -1,  1 );
 			Compare(p, tmpPos,  1,  1 );
 			Set(tmpPos, p);
 		}
-		for (tmpPos.x=1 ; tmpPos.x<m_size.x-1 ; tmpPos.x++) {
-			etk::Vector2D<int32_t> p = Get(tmpPos);
+		for (tmpPos.setX(1) ; tmpPos.x()<m_size.x()-1 ; tmpPos+=vec2(1,0)) {
+			ivec2 p = Get(tmpPos);
 			Compare(p, tmpPos, -1,  0 );
 			Set(tmpPos, p);
 		}
@@ -312,29 +312,29 @@ void Grid::GenerateSDF()
 
 void draw::Image::DistanceField(void)
 {
-	DistanceField(etk::Vector2D<int32_t>(0,0), m_size);
+	DistanceField(ivec2(0,0), m_size);
 }
 #endif
 
 #define META_DIST   (8)
-void draw::Image::DistanceField(etk::Vector2D<int32_t> pos, etk::Vector2D<int32_t> size, int32_t upscaler, int32_t startPos)
+void draw::Image::DistanceField(ivec2 pos, ivec2 size, int32_t upscaler, int32_t startPos)
 {
 	#ifndef BASIC_GRADIENT
-	float maxVal = 1/(1000.0*sqrt(META_DIST*META_DIST+META_DIST*META_DIST));
+	float maxVal = 1/(1000.0*sqrtf(META_DIST*META_DIST+META_DIST*META_DIST));
 	etk::Vector2D<int32_t> tmpPos;
 	// generate distance system ... matrix ...
-	Grid grid2(etk::Vector2D<int32_t>(META_DIST*2,META_DIST*2));
-	for(tmpPos.y=0 ; tmpPos.y<META_DIST*2 ; tmpPos.y++ ) {
-		for(tmpPos.x=0 ; tmpPos.x<META_DIST*2 ; tmpPos.x++ ) {
-			int32_t val = 1000.0*sqrt((tmpPos.x-META_DIST)*(tmpPos.x-META_DIST) + (tmpPos.y-META_DIST)*(tmpPos.y-META_DIST));
+	Grid grid2(ivec2(META_DIST*2,META_DIST*2));
+	for(tmpPos.setY(0) ; tmpPos.y()<META_DIST*2 ; tmpPos+=vec2(0,1) ) {
+		for(tmpPos.setX(0) ; tmpPos.x<META_DIST*2 ; tmpPos+=vec2(1,0) ) {
+			int32_t val = 1000.0*sqrtf((tmpPos.x()-META_DIST)*(tmpPos.x()-META_DIST) + (tmpPos.y()-META_DIST)*(tmpPos.y()-META_DIST));
 			grid2.Set(tmpPos, val);
 		}
 	}
 	Grid grid1(size);
 	grid1.SetErrorVal(0);
 	
-	for(tmpPos.y=0 ; tmpPos.y<size.y ; tmpPos.y++ ) {
-		for(tmpPos.x=0 ; tmpPos.x<size.x ; tmpPos.x++ ) {
+	for(tmpPos.setY(0) ; tmpPos.y()<size.y() ; tmpPos+=vec2(0,1) ) {
+		for(tmpPos.setX(0) ; tmpPos.x<size.x() ; tmpPos+=vec2(1,0) ) {
 			draw::Color tmpColor = Get(pos+tmpPos);
 			// Points inside get marked with a x/y of zero.
 			// Points outside get marked with an infinitely large distance.
@@ -345,20 +345,20 @@ void draw::Image::DistanceField(etk::Vector2D<int32_t> pos, etk::Vector2D<int32_
 			}
 		}
 	}
-	for(tmpPos.y=startPos ; tmpPos.y<size.y ; tmpPos.y+=upscaler ) {
-		for(tmpPos.x=startPos ; tmpPos.x<size.x ; tmpPos.x+=upscaler ) {
+	for(tmpPos.setY(startPos) ; tmpPos.y()<size.y() ; tmpPos+=vec2(0,upscaler) ) {
+		for(tmpPos.setX(startPos) ; tmpPos.x<size.x() ; tmpPos+=vec2(upscaler,0) ) {
 			int32_t insideOrOutsideCurrentPixel = grid1.Get(tmpPos);
 			// when out no distance find ...
 			grid1.SetErrorVal(insideOrOutsideCurrentPixel);
 			
-			etk::Vector2D<int32_t> tmpPos2;
+			ivec2 tmpPos2;
 			int32_t newDist = 50000000;
-			for(tmpPos2.y=-META_DIST ; tmpPos2.y<META_DIST ; tmpPos2.y++ ) {
-				for(tmpPos2.x=-META_DIST ; tmpPos2.x<META_DIST ; tmpPos2.x++ ) {
+			for(tmpPos2.setY(-META_DIST) ; tmpPos2.y()<META_DIST ; tmpPos+=vec2(0,1) ) {
+				for(tmpPos2.setX(-META_DIST) ; tmpPos2.x()<META_DIST ; tmpPos+=vec2(1,0) ) {
 					// we have an opposite factor ...
 					if (insideOrOutsideCurrentPixel != grid1.Get(tmpPos+tmpPos2)) {
 						// get new distance
-						int32_t tmpDist = grid2.Get(tmpPos2 + etk::Vector2D<int32_t>(META_DIST,META_DIST));
+						int32_t tmpDist = grid2.Get(tmpPos2 + ivec2(META_DIST,META_DIST));
 						if (newDist > tmpDist) {
 							newDist = tmpDist;
 						}
@@ -384,9 +384,9 @@ void draw::Image::DistanceField(etk::Vector2D<int32_t> pos, etk::Vector2D<int32_
 	grid1.SetErrorVal(0);
 	grid2.SetErrorVal(500000);
 	
-	etk::Vector2D<int32_t> tmpPos;
-	for(tmpPos.y=0 ; tmpPos.y<size.y ; tmpPos.y++ ) {
-		for(tmpPos.x=0 ; tmpPos.x<size.x ; tmpPos.x++ ) {
+	ivec2 tmpPos;
+	for(tmpPos.setY(0) ; tmpPos.y()<size.y() ; tmpPos+=vec2(0,1) ) {
+		for(tmpPos.setX(0) ; tmpPos.x()<size.x() ; tmpPos+=vec2(1,0) ) {
 			draw::Color tmpColor = Get(pos+tmpPos);
 			// Points inside get marked with a x/y of zero.
 			// Points outside get marked with an infinitely large distance.
@@ -403,13 +403,13 @@ void draw::Image::DistanceField(etk::Vector2D<int32_t> pos, etk::Vector2D<int32_
 	grid1.GenerateSDF();
 	grid2.GenerateSDF();
 	
-	for(tmpPos.y=startPos ; tmpPos.y<size.y ; tmpPos.y+=upscaler ) {
-		for(tmpPos.x=startPos ; tmpPos.x<size.x ; tmpPos.x+=upscaler ) {
-			etk::Vector2D<int32_t> elem1 = grid1.Get(tmpPos);
-			etk::Vector2D<int32_t> elem2 = grid2.Get(tmpPos);
+	for(tmpPos.setY(startPos) ; tmpPos.y()<size.y() ; tmpPos+=vec2(0,upscaler) ) {
+		for(tmpPos.setX(startPos) ; tmpPos.x()<size.x() ; tmpPos+=vec2(upscaler,0) ) {
+			ivec2 elem1 = grid1.Get(tmpPos);
+			ivec2 elem2 = grid2.Get(tmpPos);
 			// Calculate the actual distance from the x/y
-			float dist1 = elem1.GetLength();
-			float dist2 = elem2.GetLength();
+			float dist1 = elem1.length();
+			float dist2 = elem2.length();
 			float dist = dist1 - dist2;
 			/*
 			if (tmpPos.y < 32) {

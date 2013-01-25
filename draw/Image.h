@@ -53,7 +53,7 @@ class Grid
 		etk::Vector<int32_t > m_data;
 		int32_t               m_outsideVal;
 		int32_t               m_errorVal;
-		Grid(etk::Vector2D<int32_t> size)
+		Grid(ivec2 size)
 		{
 			m_size = size;
 			m_outsideVal = 20;
@@ -61,7 +61,7 @@ class Grid
 			// basic element :
 			int32_t tmpPoint = 0;
 			// preallocate data with a basic bg elements :
-			m_data.ReSize(m_size.x*m_size.y, tmpPoint);
+			m_data.ReSize(m_size.x()*m_size.y(), tmpPoint);
 		};
 		~Grid(void) { };
 		void SetOutsideVal(int32_t newVal)
@@ -74,34 +74,34 @@ class Grid
 		}
 		void SetInide(etk::Vector2D<int32_t> pos)
 		{
-			if(    pos.x>=0 && pos.x<m_size.x
-			    && pos.y>=0 && pos.y<m_size.y) {
-				m_data[pos.x+pos.y*m_size.x]=0;
+			if(    pos.x()>=0 && pos.x()<m_size.x()
+			    && pos.y()>=0 && pos.y()<m_size.y()) {
+				m_data[pos.x()+pos.y()*m_size.x()]=0;
 			}
 		};
 		void SetOutside(etk::Vector2D<int32_t> pos)
 		{
-			if(    pos.x>=0 && pos.x<m_size.x
-			    && pos.y>=0 && pos.y<m_size.y) {
-				m_data[pos.x+pos.y*m_size.x]=m_outsideVal;
+			if(    pos.x()>=0 && pos.x()<m_size.x()
+			    && pos.y()>=0 && pos.y()<m_size.y()) {
+				m_data[pos.x()+pos.y()*m_size.x()]=m_outsideVal;
 			}
 		};
 		
 		int32_t Get(etk::Vector2D<int32_t> pos)
 		{
 			;
-			if(    pos.x>0 && pos.x<m_size.x
-			    && pos.y>0 && pos.y<m_size.y) {
-				return m_data[pos.x+pos.y*m_size.x];
+			if(    pos.x()>0 && pos.x()<m_size.x()
+			    && pos.y()>0 && pos.y()<m_size.y()) {
+				return m_data[pos.x()+pos.y()*m_size.x()];
 			}
 			return m_errorVal;
 		};
 		
 		void Set(etk::Vector2D<int32_t> pos, int32_t val)
 		{
-			if(    pos.x>0 && pos.x<m_size.x
-			    && pos.y>0 && pos.y<m_size.y) {
-				m_data[pos.x+pos.y*m_size.x] = val;
+			if(    pos.x()>0 && pos.x()<m_size.x()
+			    && pos.y()>0 && pos.y()<m_size.y()) {
+				m_data[pos.x()+pos.y()*m_size.x()] = val;
 			}
 		};
 		
@@ -110,11 +110,11 @@ class Grid
 class Grid
 {
 	public:
-		etk::Vector2D<int32_t>               m_size;
-		etk::Vector<etk::Vector2D<int32_t> > m_data;
-		int32_t                              m_outsideVal;
-		int32_t                              m_errorVal;
-		Grid(etk::Vector2D<int32_t> size)
+		ivec2               m_size;
+		etk::Vector<ivec2>  m_data;
+		int32_t             m_outsideVal;
+		int32_t             m_errorVal;
+		Grid(ivec2 size)
 		{
 			m_size = size;
 			m_outsideVal = 20;
@@ -122,7 +122,7 @@ class Grid
 			// basic element :
 			etk::Vector2D<int32_t> tmpPoint(0,0);
 			// preallocate data with a basic bg elements :
-			m_data.ReSize(m_size.x*m_size.y, tmpPoint);
+			m_data.ReSize(m_size.x()*m_size.y(), tmpPoint);
 		};
 		~Grid(void) { };
 		void SetOutsideVal(int32_t newVal)
@@ -133,48 +133,46 @@ class Grid
 		{
 			m_errorVal = newVal;
 		}
-		void SetInide(etk::Vector2D<int32_t> pos)
+		void SetInide(ivec2 pos)
 		{
 			//if(    pos.x>=0 && pos.x<m_size.x
 			//    && pos.y>=0 && pos.y<m_size.y) {
-				m_data[pos.x+pos.y*m_size.x].x=0;
-				m_data[pos.x+pos.y*m_size.x].y=0;
+				m_data[pos.x()+pos.y()*m_size.x()].setX(0);
+				m_data[pos.x()+pos.y()*m_size.x()].setY(0);
 			//}
 		};
-		void SetOutside(etk::Vector2D<int32_t> pos)
+		void SetOutside(ivec2 pos)
 		{
 			//if(    pos.x>=0 && pos.x<m_size.x
 			//    && pos.y>=0 && pos.y<m_size.y) {
-				m_data[pos.x+pos.y*m_size.x].x=m_outsideVal;
-				m_data[pos.x+pos.y*m_size.x].y=m_outsideVal;
+				m_data[pos.x()+pos.y()*m_size.x()].setX(m_outsideVal);
+				m_data[pos.x()+pos.y()*m_size.x()].setY(m_outsideVal);
 			//}
 		};
 		
-		etk::Vector2D<int32_t> Get(etk::Vector2D<int32_t> pos)
+		ivec2 Get(ivec2 pos)
 		{
 			//if(    pos.x>0 && pos.x<m_size.x
 			//    && pos.y>0 && pos.y<m_size.y) {
-				return m_data[pos.x+pos.y*m_size.x];
+				return m_data[pos.x()+pos.y()*m_size.x()];
 			//}
 			//return etk::Vector2D<int32_t>(m_errorVal,m_errorVal);
 		};
 		
-		void Set(etk::Vector2D<int32_t> pos, etk::Vector2D<int32_t> val)
+		void Set(ivec2 pos, ivec2 val)
 		{
 			//if(    pos.x>0 && pos.x<m_size.x
 			//    && pos.y>0 && pos.y<m_size.y) {
-				m_data[pos.x+pos.y*m_size.x] = val;
+				m_data[pos.x()+pos.y()*m_size.x()] = val;
 			//}
 		};
 		
-		void Compare(etk::Vector2D<int32_t> &p, etk::Vector2D<int32_t> pos, int32_t offsetx, int32_t offsety )
+		void Compare(ivec2 &p, ivec2 pos, int32_t offsetx, int32_t offsety )
 		{
-			pos.x += offsetx;
-			pos.y += offsety;
-			etk::Vector2D<int32_t> other = Get(pos);
-			other.x += offsetx;
-			other.y += offsety;
-			if (other.GetSquaredLength() < p.GetSquaredLength()) {
+			pos += ivec2(offsetx,offsety);
+			ivec2 other = Get(pos);
+			other += ivec2(offsetx,offsety);
+			if (other.dot(p) < p.dot(p)) {
 				p = other;
 			}
 		};
@@ -192,7 +190,7 @@ namespace draw
 	
 	class Image {
 		private:
-			etk::Vector2D<int32_t>        m_size;
+			ivec2                         m_size;
 			etk::Vector<draw::Color>      m_data;
 			agg::rendering_buffer *       m_renderingBuffer;
 			agg::pixfmt_rgba32 *          m_pixFrame;
@@ -206,7 +204,7 @@ namespace draw
 			float                         m_strokeSize;
 		public:
 			// constructor :
-			Image(etk::Vector2D<int32_t> size);
+			Image(ivec2 size);
 			Image(void);
 			// destructor
 			~Image(void);
@@ -221,20 +219,20 @@ namespace draw
 		// -- basic tools :
 		// -----------------------------------------------
 		public :
-			void Resize(etk::Vector2D<int32_t> size);
+			void Resize(ivec2 size);
 			//void Resize(etk::Vector2D<int32_t> startPos, Vector2D<int32_t> size);
 			
-			etk::Vector2D<int32_t> GetSize(void) const
+			ivec2 GetSize(void) const
 			{
 				return m_size;
 			};
 			int32_t GetWidth(void) const
 			{
-				return m_size.x;
+				return m_size.x();
 			};
 			int32_t GetHeight(void) const
 			{
-				return m_size.y;
+				return m_size.y();
 			};
 			
 			//void Move(etk::Vector2D<int32_t> pos);
@@ -246,7 +244,7 @@ namespace draw
 			
 			void Clear(void)
 			{
-				for (int32_t iii=0; iii<m_size.x*m_size.y; iii++) {
+				for (int32_t iii=0; iii<m_size.x()*m_size.y(); iii++) {
 					m_data[iii] = m_fillColor;
 				}
 			}
@@ -255,21 +253,21 @@ namespace draw
 			
 			//Image & operator= (const Image &image)
 			
-			draw::Color Get(etk::Vector2D<int32_t> pos)
+			draw::Color Get(ivec2 pos)
 			{
 				draw::Color outColor(0x00000000);
-				if(    pos.x>0 && pos.x<m_size.x
-				    && pos.y>0 && pos.y<m_size.y) {
-					outColor = m_data[pos.x+pos.y*m_size.x];
+				if(    pos.x()>0 && pos.x()<m_size.x()
+				    && pos.y()>0 && pos.y()<m_size.y()) {
+					outColor = m_data[pos.x()+pos.y()*m_size.x()];
 				}
 				return outColor;
 			}
 			
-			void Set(etk::Vector2D<int32_t> pos, draw::Color newColor)
+			void Set(ivec2 pos, draw::Color newColor)
 			{
-				if(    pos.x>=0 && pos.x<m_size.x
-				    && pos.y>=0 && pos.y<m_size.y) {
-					m_data[pos.x+pos.y*m_size.x] = newColor;
+				if(    pos.x()>=0 && pos.x()<m_size.x()
+				    && pos.y()>=0 && pos.y()<m_size.y()) {
+					m_data[pos.x()+pos.y()*m_size.x()] = newColor;
 				}
 			}
 			
@@ -292,21 +290,21 @@ namespace draw
 			void SetStrokeSize(float thickness) {
 				m_strokeSize = thickness;
 			}
-			void MoveTo(etk::Vector2D<float> pos);
-			void MoveToAbs(etk::Vector2D<float> pos);
-			void LineTo(etk::Vector2D<float> pos);
-			void LineToAbs(etk::Vector2D<float> pos);
+			void MoveTo(vec2 pos);
+			void MoveToAbs(vec2 pos);
+			void LineTo(vec2 pos);
+			void LineToAbs(vec2 pos);
 			void Join(void);
 			void Draw(void);
 			
-			void Line(etk::Vector2D<float> posStart, etk::Vector2D<float> posEnd);
-			void Dot(etk::Vector2D<float> pos);
-			void Rectangle(etk::Vector2D<float> pos, etk::Vector2D<float> size);
-			void Circle(etk::Vector2D<float> pos, float radius, float angleStart=0, float angleStop=2*M_PI);
-			void Disc(etk::Vector2D<float> pos, float radius, float angleStart=0, float angleStop=2*M_PI);
+			void Line(vec2 posStart, vec2 posEnd);
+			void Dot(vec2 pos);
+			void Rectangle(vec2 pos, vec2 size);
+			void Circle(vec2 pos, float radius, float angleStart=0, float angleStop=2*M_PI);
+			void Disc(vec2 pos, float radius, float angleStart=0, float angleStop=2*M_PI);
 			// generate the distant field from the alpha value of the Image
 			void DistanceField(void);
-			void DistanceField(etk::Vector2D<int32_t> pos, etk::Vector2D<int32_t> size, int32_t upscaler=1, int32_t startPos=0);
+			void DistanceField(ivec2 pos, ivec2 size, int32_t upscaler=1, int32_t startPos=0);
 			
 			void SaveFile(const char * file) {};
 		private:
