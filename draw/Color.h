@@ -54,7 +54,7 @@ namespace draw {
 				b = _b;
 				a = _a;
 			}
-			Colorf(draw::Color& _input)
+			Colorf(const draw::Color& _input)
 			{
 				r = (float)_input.r / 255.0;
 				g = (float)_input.g / 255.0;
