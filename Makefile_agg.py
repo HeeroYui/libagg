@@ -22,7 +22,6 @@ myModule.AddSrcFile([
 	'agg/agg_curves.cpp',
 	'agg/agg_embedded_raster_fonts.cpp',
 	'agg/agg_font_freetype.cpp',
-	'agg/agg_font_freetype.h',
 	'agg/agg_gsv_text.cpp',
 	'agg/agg_image_filters.cpp',
 	'agg/agg_line_aa_basics.cpp',
