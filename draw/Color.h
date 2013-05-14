@@ -84,8 +84,8 @@ namespace draw {
 	};
 	
 	void ParseColor(const char* _input, struct agg::rgba8& color);
-	etk::UString GetHexString(draw::Color& color);
-	etk::UString GetString(draw::Color& color);
+	etk::UString GetHexString(const draw::Color& color);
+	etk::UString GetString(const draw::Color& color);
 	
 	namespace color {
 		extern const Color none;

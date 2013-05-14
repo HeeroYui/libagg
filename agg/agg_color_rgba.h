@@ -438,7 +438,7 @@ namespace agg
             draw::ParseColor(_input, *this);
         };
         
-        uint32_t Get(void)
+        uint32_t Get(void) const
         {
             return ((uint32_t)r<<24)+((uint32_t)g<<16)+((uint32_t)b<<8)+((uint32_t)a);
         };
