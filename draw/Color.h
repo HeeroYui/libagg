@@ -22,8 +22,8 @@
  *******************************************************************************
  */
 
-#ifndef __ETK_COLOR_H__
-#define __ETK_COLOR_H__
+#ifndef __DRAW_COLOR_H__
+#define __DRAW_COLOR_H__
 
 #include <etk/UString.h>
 #include <agg/agg_color_rgba.h>
