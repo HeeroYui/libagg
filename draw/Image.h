@@ -61,25 +61,25 @@ class Grid
 			// basic element :
 			int32_t tmpPoint = 0;
 			// preallocate data with a basic bg elements :
-			m_data.ReSize(m_size.x()*m_size.y(), tmpPoint);
+			m_data.reSize(m_size.x()*m_size.y(), tmpPoint);
 		};
 		~Grid(void) { };
-		void SetOutsideVal(int32_t newVal)
+		void setOutsideVal(int32_t newVal)
 		{
 			m_outsideVal = newVal;
 		}
-		void SetErrorVal(int32_t newVal)
+		void setErrorVal(int32_t newVal)
 		{
 			m_errorVal = newVal;
 		}
-		void SetInide(etk::Vector2D<int32_t> pos)
+		void setInide(etk::Vector2D<int32_t> pos)
 		{
 			if(    pos.x()>=0 && pos.x()<m_size.x()
 			    && pos.y()>=0 && pos.y()<m_size.y()) {
 				m_data[pos.x()+pos.y()*m_size.x()]=0;
 			}
 		};
-		void SetOutside(etk::Vector2D<int32_t> pos)
+		void setOutside(etk::Vector2D<int32_t> pos)
 		{
 			if(    pos.x()>=0 && pos.x()<m_size.x()
 			    && pos.y()>=0 && pos.y()<m_size.y()) {
@@ -87,7 +87,7 @@ class Grid
 			}
 		};
 		
-		int32_t Get(etk::Vector2D<int32_t> pos)
+		int32_t get(etk::Vector2D<int32_t> pos)
 		{
 			;
 			if(    pos.x()>0 && pos.x()<m_size.x()
@@ -97,7 +97,7 @@ class Grid
 			return m_errorVal;
 		};
 		
-		void Set(etk::Vector2D<int32_t> pos, int32_t val)
+		void set(etk::Vector2D<int32_t> pos, int32_t val)
 		{
 			if(    pos.x()>0 && pos.x()<m_size.x()
 			    && pos.y()>0 && pos.y()<m_size.y()) {
@@ -122,18 +122,18 @@ class Grid
 			// basic element :
 			etk::Vector2D<int32_t> tmpPoint(0,0);
 			// preallocate data with a basic bg elements :
-			m_data.ReSize(m_size.x()*m_size.y(), tmpPoint);
+			m_data.reSize(m_size.x()*m_size.y(), tmpPoint);
 		};
 		~Grid(void) { };
-		void SetOutsideVal(int32_t newVal)
+		void setOutsideVal(int32_t newVal)
 		{
 			m_outsideVal = newVal;
 		}
-		void SetErrorVal(int32_t newVal)
+		void setErrorVal(int32_t newVal)
 		{
 			m_errorVal = newVal;
 		}
-		void SetInide(ivec2 pos)
+		void setInide(ivec2 pos)
 		{
 			//if(    pos.x>=0 && pos.x<m_size.x
 			//    && pos.y>=0 && pos.y<m_size.y) {
@@ -141,7 +141,7 @@ class Grid
 				m_data[pos.x()+pos.y()*m_size.x()].setY(0);
 			//}
 		};
-		void SetOutside(ivec2 pos)
+		void setOutside(ivec2 pos)
 		{
 			//if(    pos.x>=0 && pos.x<m_size.x
 			//    && pos.y>=0 && pos.y<m_size.y) {
@@ -150,7 +150,7 @@ class Grid
 			//}
 		};
 		
-		ivec2 Get(ivec2 pos)
+		ivec2 get(ivec2 pos)
 		{
 			//if(    pos.x>0 && pos.x<m_size.x
 			//    && pos.y>0 && pos.y<m_size.y) {
@@ -159,7 +159,7 @@ class Grid
 			//return etk::Vector2D<int32_t>(m_errorVal,m_errorVal);
 		};
 		
-		void Set(ivec2 pos, ivec2 val)
+		void set(ivec2 pos, ivec2 val)
 		{
 			//if(    pos.x>0 && pos.x<m_size.x
 			//    && pos.y>0 && pos.y<m_size.y) {
@@ -170,13 +170,13 @@ class Grid
 		void Compare(ivec2 &p, ivec2 pos, int32_t offsetx, int32_t offsety )
 		{
 			pos += ivec2(offsetx,offsety);
-			ivec2 other = Get(pos);
+			ivec2 other = get(pos);
 			other += ivec2(offsetx,offsety);
 			if (other.dot(p) < p.dot(p)) {
 				p = other;
 			}
 		};
-		void GenerateSDF(void);
+		void generateSDF(void);
 };
 #endif
 
@@ -213,7 +213,7 @@ namespace draw
 		
 		// EWOL internal API for Texture system :
 		public:
-			void* GetTextureDataPointer(void) { return &m_data[0]; };
+			void* getTextureDataPointer(void) { return &m_data[0]; };
 		
 		// -----------------------------------------------
 		// -- basic tools :
@@ -222,15 +222,15 @@ namespace draw
 			void Resize(ivec2 size);
 			//void Resize(etk::Vector2D<int32_t> startPos, Vector2D<int32_t> size);
 			
-			ivec2 GetSize(void) const
+			ivec2 getSize(void) const
 			{
 				return m_size;
 			};
-			int32_t GetWidth(void) const
+			int32_t getWidth(void) const
 			{
 				return m_size.x();
 			};
-			int32_t GetHeight(void) const
+			int32_t getHeight(void) const
 			{
 				return m_size.y();
 			};
@@ -242,7 +242,7 @@ namespace draw
 			//void Zoom(float coefficient);
 			
 			
-			void Clear(void)
+			void clear(void)
 			{
 				for (int32_t iii=0; iii<m_size.x()*m_size.y(); iii++) {
 					m_data[iii] = m_fillColor;
@@ -253,7 +253,7 @@ namespace draw
 			
 			//Image & operator= (const Image &image)
 			
-			draw::Color Get(ivec2 pos)
+			draw::Color get(ivec2 pos)
 			{
 				draw::Color outColor(0x00000000);
 				if(    pos.x()>0 && pos.x()<m_size.x()
@@ -263,7 +263,7 @@ namespace draw
 				return outColor;
 			}
 			
-			void Set(ivec2 pos, draw::Color newColor)
+			void set(ivec2 pos, draw::Color newColor)
 			{
 				if(    pos.x()>=0 && pos.x()<m_size.x()
 				    && pos.y()>=0 && pos.y()<m_size.y()) {
@@ -271,23 +271,23 @@ namespace draw
 				}
 			}
 			
-			//Image GetSubImage(etk::Vector2D<int32_t> startPos, Vector2D<int32_t> size) const;
+			//Image getSubImage(etk::Vector2D<int32_t> startPos, Vector2D<int32_t> size) const;
 			
-			//void SetData(uint8_t *data, etk::Vector2D<int32_t> size);
+			//void setData(uint8_t *data, etk::Vector2D<int32_t> size);
 			
 		// -----------------------------------------------
-		// -- Drawing tools :
+		// -- drawing tools :
 		// -----------------------------------------------
 		public :
 			void Begin(void);
 			void End(void);
-			void SetFillColor(draw::Color newColor) {
+			void setFillColor(draw::Color newColor) {
 				m_fillColor = newColor;
 			}
-			void SetStrokeColor(draw::Color newColor) {
+			void setStrokeColor(draw::Color newColor) {
 				m_strokeColor = newColor;
 			}
-			void SetStrokeSize(float thickness) {
+			void setStrokeSize(float thickness) {
 				m_strokeSize = thickness;
 			}
 			void MoveTo(vec2 pos);
@@ -295,7 +295,7 @@ namespace draw
 			void LineTo(vec2 pos);
 			void LineToAbs(vec2 pos);
 			void Join(void);
-			void Draw(void);
+			void draw(void);
 			
 			void Line(vec2 posStart, vec2 posEnd);
 			void Dot(vec2 pos);

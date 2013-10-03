@@ -57,8 +57,8 @@ void draw::Image::Init(void)
 	// basic element :
 	draw::Color tmpBg(0,0,0,0);
 	// preallocate data with a basic bg elements :
-	m_data.ReSize(m_size.x()*m_size.y(), tmpBg);
-	if (m_size.x()*m_size.y() > m_data.Size()) {
+	m_data.reSize(m_size.x()*m_size.y(), tmpBg);
+	if (m_size.x()*m_size.y() > m_data.size()) {
 		DRAW_ERROR("Allocation of data buffer in error");
 		return;
 	}
@@ -142,8 +142,8 @@ void draw::Image::Resize(ivec2 size)
 	// basic element :
 	draw::Color tmpBg(0,0,0,0);
 	// preallocate data with a basic bg elements :
-	m_data.ReSize(m_size.x()*m_size.y(), tmpBg);
-	if (m_size.x()*m_size.y() > m_data.Size()) {
+	m_data.reSize(m_size.x()*m_size.y(), tmpBg);
+	if (m_size.x()*m_size.y() > m_data.size()) {
 		DRAW_ERROR("Allocation of data buffer in error");
 		return;
 	}
@@ -221,7 +221,7 @@ void draw::Image::Join(void)
 	
 }
 // generate the display
-void draw::Image::Draw(void)
+void draw::Image::draw(void)
 {
 	
 }
@@ -234,7 +234,7 @@ void draw::Image::Dot(vec2 pos)
 		LineTo(pos+etk::Vector2D<float>(1,1));
 		End();
 	*/
-	Set(pos, m_fillColor);
+	set(pos, m_fillColor);
 }
 
 void draw::Image::Line(vec2 posStart, vec2 posEnd)
@@ -271,39 +271,39 @@ void draw::Image::Disc(vec2 pos, float radius, float angleStart, float angleStop
 }
 #ifdef BASIC_GRADIENT
 
-void Grid::GenerateSDF()
+void Grid::generateSDF()
 {
 	// Pass 0
 	ivec2 tmpPos(1,1);
 	for (tmpPos.setY(1) ; tmpPos.y()<m_size.y()-1 ; tmpPos+=vec2(0,1)) {
 		for (tmpPos.setX(1) ; tmpPos.x()<m_size.x()-1 ; tmpPos+=vec2(1,0) ) {
-			ivec2 p = Get(tmpPos);
+			ivec2 p = get(tmpPos);
 			Compare(p, tmpPos, -1,  0 );
 			Compare(p, tmpPos,  0, -1 );
 			Compare(p, tmpPos, -1, -1 );
 			Compare(p, tmpPos,  1, -1 );
-			Set(tmpPos, p);
+			set(tmpPos, p);
 		}
 		for (tmpPos.setX(m_size.x()-2) ; tmpPos.x()>0 ; tmpPos-=vec2(1,0) ) {
-			ivec2 p = Get(tmpPos);
+			ivec2 p = get(tmpPos);
 			Compare(p, tmpPos, 1, 0 );
-			Set(tmpPos, p );
+			set(tmpPos, p );
 		}
 	}
 	// Pass 1
 	for (tmpPos.setY(m_size.y()-2) ; tmpPos.y()>0 ; tmpPos-=vec2(0,1)) {
 		for (tmpPos.setX(m_size.x()-2) ; tmpPos.x()>1 ; tmpPos-=vec2(1,0)) {
-			ivec2 p = Get(tmpPos);
+			ivec2 p = get(tmpPos);
 			Compare(p, tmpPos,  1,  0 );
 			Compare(p, tmpPos,  0,  1 );
 			Compare(p, tmpPos, -1,  1 );
 			Compare(p, tmpPos,  1,  1 );
-			Set(tmpPos, p);
+			set(tmpPos, p);
 		}
 		for (tmpPos.setX(1) ; tmpPos.x()<m_size.x()-1 ; tmpPos+=vec2(1,0)) {
-			ivec2 p = Get(tmpPos);
+			ivec2 p = get(tmpPos);
 			Compare(p, tmpPos, -1,  0 );
-			Set(tmpPos, p);
+			set(tmpPos, p);
 		}
 	}
 }
@@ -327,38 +327,38 @@ void draw::Image::DistanceField(ivec2 pos, ivec2 size, int32_t upscaler, int32_t
 	for(tmpPos.setY(0) ; tmpPos.y()<META_DIST*2 ; tmpPos+=vec2(0,1) ) {
 		for(tmpPos.setX(0) ; tmpPos.x<META_DIST*2 ; tmpPos+=vec2(1,0) ) {
 			int32_t val = 1000.0*sqrtf((tmpPos.x()-META_DIST)*(tmpPos.x()-META_DIST) + (tmpPos.y()-META_DIST)*(tmpPos.y()-META_DIST));
-			grid2.Set(tmpPos, val);
+			grid2.set(tmpPos, val);
 		}
 	}
 	Grid grid1(size);
-	grid1.SetErrorVal(0);
+	grid1.setErrorVal(0);
 	
 	for(tmpPos.setY(0) ; tmpPos.y()<size.y() ; tmpPos+=vec2(0,1) ) {
 		for(tmpPos.setX(0) ; tmpPos.x<size.x() ; tmpPos+=vec2(1,0) ) {
-			draw::Color tmpColor = Get(pos+tmpPos);
+			draw::Color tmpColor = get(pos+tmpPos);
 			// Points inside get marked with a x/y of zero.
 			// Points outside get marked with an infinitely large distance.
 			if (tmpColor.a<=0x7F) {
-				grid1.SetInide(tmpPos);
+				grid1.setInide(tmpPos);
 			} else {
-				grid1.SetOutside(tmpPos);
+				grid1.setOutside(tmpPos);
 			}
 		}
 	}
 	for(tmpPos.setY(startPos) ; tmpPos.y()<size.y() ; tmpPos+=vec2(0,upscaler) ) {
 		for(tmpPos.setX(startPos) ; tmpPos.x<size.x() ; tmpPos+=vec2(upscaler,0) ) {
-			int32_t insideOrOutsideCurrentPixel = grid1.Get(tmpPos);
+			int32_t insideOrOutsideCurrentPixel = grid1.get(tmpPos);
 			// when out no distance find ...
-			grid1.SetErrorVal(insideOrOutsideCurrentPixel);
+			grid1.setErrorVal(insideOrOutsideCurrentPixel);
 			
 			ivec2 tmpPos2;
 			int32_t newDist = 50000000;
 			for(tmpPos2.setY(-META_DIST) ; tmpPos2.y()<META_DIST ; tmpPos+=vec2(0,1) ) {
 				for(tmpPos2.setX(-META_DIST) ; tmpPos2.x()<META_DIST ; tmpPos+=vec2(1,0) ) {
 					// we have an opposite factor ...
-					if (insideOrOutsideCurrentPixel != grid1.Get(tmpPos+tmpPos2)) {
+					if (insideOrOutsideCurrentPixel != grid1.get(tmpPos+tmpPos2)) {
 						// get new distance
-						int32_t tmpDist = grid2.Get(tmpPos2 + ivec2(META_DIST,META_DIST));
+						int32_t tmpDist = grid2.get(tmpPos2 + ivec2(META_DIST,META_DIST));
 						if (newDist > tmpDist) {
 							newDist = tmpDist;
 						}
@@ -366,47 +366,47 @@ void draw::Image::DistanceField(ivec2 pos, ivec2 size, int32_t upscaler, int32_t
 				}
 			}
 			// set the finded distance :
-			draw::Color tmpColor = Get(pos+tmpPos);
+			draw::Color tmpColor = get(pos+tmpPos);
 			float tmpValue = ((1.0-((float)newDist * maxVal)) * 0.5) * 128.0;
 			if (tmpColor.a<=0x7F) {
 				tmpColor.a = etk_avg(0, tmpValue, 255);
 			} else {
 				tmpColor.a = etk_avg(0, 255-tmpValue, 255);
 			}
-			Set(pos+tmpPos, tmpColor);
+			set(pos+tmpPos, tmpColor);
 		}
 	}
 	#else
 	Grid grid1(size);
 	Grid grid2(size);
-	grid1.SetOutsideVal(500000);
-	grid2.SetOutsideVal(500000);
-	grid1.SetErrorVal(0);
-	grid2.SetErrorVal(500000);
+	grid1.setOutsideVal(500000);
+	grid2.setOutsideVal(500000);
+	grid1.setErrorVal(0);
+	grid2.setErrorVal(500000);
 	
 	ivec2 tmpPos;
 	for(tmpPos.setY(0) ; tmpPos.y()<size.y() ; tmpPos+=vec2(0,1) ) {
 		for(tmpPos.setX(0) ; tmpPos.x()<size.x() ; tmpPos+=vec2(1,0) ) {
-			draw::Color tmpColor = Get(pos+tmpPos);
+			draw::Color tmpColor = get(pos+tmpPos);
 			// Points inside get marked with a x/y of zero.
 			// Points outside get marked with an infinitely large distance.
 			if (tmpColor.a<=0x7F) {
-				grid1.SetInide(tmpPos);
-				grid2.SetOutside(tmpPos);
+				grid1.setInide(tmpPos);
+				grid2.setOutside(tmpPos);
 			} else {
-				grid2.SetInide(tmpPos);
-				grid1.SetOutside(tmpPos);
+				grid2.setInide(tmpPos);
+				grid1.setOutside(tmpPos);
 			}
 		}
 	}
-	// Generate the SDF:
-	grid1.GenerateSDF();
-	grid2.GenerateSDF();
+	// generate the SDF:
+	grid1.generateSDF();
+	grid2.generateSDF();
 	
 	for(tmpPos.setY(startPos) ; tmpPos.y()<size.y() ; tmpPos+=vec2(0,upscaler) ) {
 		for(tmpPos.setX(startPos) ; tmpPos.x()<size.x() ; tmpPos+=vec2(upscaler,0) ) {
-			ivec2 elem1 = grid1.Get(tmpPos);
-			ivec2 elem2 = grid2.Get(tmpPos);
+			ivec2 elem1 = grid1.get(tmpPos);
+			ivec2 elem2 = grid2.get(tmpPos);
 			// Calculate the actual distance from the x/y
 			float dist1 = elem1.length();
 			float dist2 = elem2.length();
@@ -414,16 +414,16 @@ void draw::Image::DistanceField(ivec2 pos, ivec2 size, int32_t upscaler, int32_t
 			/*
 			if (tmpPos.y < 32) {
 				if (tmpPos.x < 32) {
-					DRAW_DEBUG( "generate Distance : " << dist1 << "," << dist2 << " ==> " << (dist*3 + 128));
+					DRAW_DEBUG( "generate Distance : " << dist1 << "," << dist2 << "  == > " << (dist*3 + 128));
 				} else if (tmpPos.x == 32) {
 					DRAW_DEBUG( " ---" );
 				}
 			}
 			*/
-			draw::Color tmpColor = Get(pos+tmpPos);
+			draw::Color tmpColor = get(pos+tmpPos);
 			// Clamp and scale it, just for display purposes.
 			tmpColor.a = etk_avg(0, (dist*3 + 128), 255);
-			Set(pos+tmpPos, tmpColor);
+			set(pos+tmpPos, tmpColor);
 		}
 	}
 	#endif

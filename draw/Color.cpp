@@ -1,7 +1,7 @@
 /**
  *******************************************************************************
  * @file draw/Color.h
- * @brief Ewol Tool Kit : basic colors
+ * @brief Ewol tool Kit : basic colors
  * @author Edouard DUPIN
  * @date 23/04/2012
  * @par Project
@@ -362,7 +362,7 @@ static bool strnCmpNoCase(const char * input1, const char * input2, int32_t maxL
 
 
 
-void draw::ParseColor(const char* _input, struct agg::rgba8& color)
+void draw::parseColor(const char* _input, struct agg::rgba8& color)
 {
 	color = draw::color::white;
 	if (NULL == _input) {
@@ -385,7 +385,7 @@ void draw::ParseColor(const char* _input, struct agg::rgba8& color)
 			} else {
 				TK_ERROR(" pb in parsing the color : \"" << inputData << "\"");
 			}
-		} else if (len==5) {
+		} else if (len == 5) {
 			int32_t red=0, green=0, blue=0, alpha=0;
 			if (sscanf(inputData + 1, "%1x%1x%1x%1x", &red, &green, &blue, &alpha) == 4) {
 				color.r = (red | red << 4);
@@ -415,7 +415,7 @@ void draw::ParseColor(const char* _input, struct agg::rgba8& color)
 				TK_ERROR(" pb in parsing the color : \"" << inputData << "\"");
 			}
 		} else {
-			TK_ERROR(" pb in parsing the color : \"" << inputData << "\" ==> unknown methode ...");
+			TK_ERROR(" pb in parsing the color : \"" << inputData << "\"  == > unknown methode ...");
 		}
 	} else if(    4 <= len
 	           && inputData[0] == 'r'
@@ -450,7 +450,7 @@ void draw::ParseColor(const char* _input, struct agg::rgba8& color)
 			color.g = (uint8_t)(fgreen * 255.);
 			color.b = (uint8_t)(fblue * 255.);
 		} else {
-			TK_ERROR(" pb in parsing the color : \"" << inputData << "\" ==> unknown methode ...");
+			TK_ERROR(" pb in parsing the color : \"" << inputData << "\"  == > unknown methode ...");
 		}
 	} else {
 		bool findIt = false;
@@ -468,7 +468,7 @@ void draw::ParseColor(const char* _input, struct agg::rgba8& color)
 			TK_ERROR(" pb in parsing the color : \"" << inputData << "\" not find ...");
 		}
 	}
-	TK_VERBOSE("Parse color : \"" << inputData << "\" ==> " << color);
+	TK_VERBOSE("Parse color : \"" << inputData << "\"  == > " << color);
 }
 
 etk::CCout& agg::operator <<(etk::CCout &os, const  struct agg::rgba8& obj)
@@ -480,14 +480,14 @@ etk::CCout& agg::operator <<(etk::CCout &os, const  struct agg::rgba8& obj)
 }
 
 
-etk::UString draw::GetHexString(const draw::Color& color)
+etk::UString draw::getHexString(const draw::Color& color)
 {
 	char colorText[256];
 	sprintf(colorText, "0x%08X", color.Get());
 	return colorText;
 }
 
-etk::UString draw::GetString(const draw::Color& color)
+etk::UString draw::getString(const draw::Color& color)
 {
 	char colorText[256];
 	sprintf(colorText, "#%08X", color.Get());

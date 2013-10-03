@@ -1,7 +1,7 @@
 /**
  *******************************************************************************
  * @file draw/Color.h
- * @brief Ewol Tool Kit : basic colors
+ * @brief Ewol tool Kit : basic colors
  * @author Edouard DUPIN
  * @date 23/04/2012
  * @par Project
@@ -83,9 +83,9 @@ namespace draw {
 			};
 	};
 	
-	void ParseColor(const char* _input, struct agg::rgba8& color);
-	etk::UString GetHexString(const draw::Color& color);
-	etk::UString GetString(const draw::Color& color);
+	void parseColor(const char* _input, struct agg::rgba8& color);
+	etk::UString getHexString(const draw::Color& color);
+	etk::UString getString(const draw::Color& color);
 	
 	namespace color {
 		extern const Color none;
