@@ -36,10 +36,10 @@ draw::Image::Image(void) :
 {
 	m_size.setX(32);
 	m_size.setY(32);
-	Init();
+	init();
 }
 
-draw::Image::Image(ivec2 size) :
+draw::Image::Image(ivec2 _size) :
 	m_renderingBuffer(NULL),
 	m_pixFrame(NULL),
 	m_renderBase(NULL),
@@ -48,11 +48,11 @@ draw::Image::Image(ivec2 size) :
 	m_strokeColor(0,0,0,0),
 	m_strokeSize(0)
 {
-	m_size = size;
-	Init();
+	m_size = _size;
+	init();
 }
 
-void draw::Image::Init(void)
+void draw::Image::init(void)
 {
 	// basic element :
 	draw::Color tmpBg(0,0,0,0);
@@ -120,7 +120,7 @@ draw::Image::~Image(void)
 	}
 }
 
-void draw::Image::Resize(ivec2 size)
+void draw::Image::resize(ivec2 size)
 {
 	if (NULL != m_renderArea) {
 		delete(m_renderArea);
@@ -186,37 +186,37 @@ void draw::Image::Resize(ivec2 size)
 }
 
 
-void draw::Image::Begin(void)
+void draw::Image::begin(void)
 {
 	
 }
 
-void draw::Image::End(void)
+void draw::Image::end(void)
 {
 	
 }
 
-void draw::Image::MoveTo(vec2 pos)
+void draw::Image::moveTo(vec2 pos)
 {
 	
 }
 
-void draw::Image::MoveToAbs(vec2 pos)
+void draw::Image::moveToAbs(vec2 pos)
 {
 	
 }
 
-void draw::Image::LineTo(vec2 pos)
+void draw::Image::lineTo(vec2 pos)
 {
 	
 }
 
-void draw::Image::LineToAbs(vec2 pos)
+void draw::Image::lineToAbs(vec2 pos)
 {
 	
 }
 // link the curent line with his start
-void draw::Image::Join(void)
+void draw::Image::join(void)
 {
 	
 }
@@ -226,7 +226,7 @@ void draw::Image::draw(void)
 	
 }
 
-void draw::Image::Dot(vec2 pos)
+void draw::Image::dot(vec2 pos)
 {
 	/*
 		Begin();
@@ -237,35 +237,35 @@ void draw::Image::Dot(vec2 pos)
 	set(pos, m_fillColor);
 }
 
-void draw::Image::Line(vec2 posStart, vec2 posEnd)
+void draw::Image::line(vec2 posStart, vec2 posEnd)
 {
-	Begin();
-	MoveTo(posStart);
-	LineTo(posEnd);
-	End();
+	begin();
+	moveTo(posStart);
+	lineTo(posEnd);
+	end();
 }
 
-void draw::Image::Rectangle(vec2 pos, vec2 size)
+void draw::Image::rectangle(vec2 pos, vec2 size)
 {
-	Begin();
+	begin();
 	vec2 tmp = pos;
-	MoveTo(pos);
+	moveTo(pos);
 	tmp += vec2(size.x(),0);
-	LineTo(tmp);
+	lineTo(tmp);
 	tmp += vec2(0,size.y());
-	LineTo(tmp);
+	lineTo(tmp);
 	tmp -= vec2(size.x(),0);
-	LineTo(tmp);
-	Join();
-	End();
+	lineTo(tmp);
+	join();
+	end();
 }
 
-void draw::Image::Circle(vec2 pos, float radius, float angleStart, float angleStop)
+void draw::Image::circle(vec2 pos, float radius, float angleStart, float angleStop)
 {
 	
 }
 
-void draw::Image::Disc(vec2 pos, float radius, float angleStart, float angleStop)
+void draw::Image::disc(vec2 pos, float radius, float angleStart, float angleStop)
 {
 	
 }
@@ -310,14 +310,14 @@ void Grid::generateSDF()
 
 // see : http://www.codersnotes.com/notes/signed-distance-fields
 
-void draw::Image::DistanceField(void)
+void draw::Image::distanceField(void)
 {
-	DistanceField(ivec2(0,0), m_size);
+	distanceField(ivec2(0,0), m_size);
 }
 #endif
 
 #define META_DIST   (8)
-void draw::Image::DistanceField(ivec2 pos, ivec2 size, int32_t upscaler, int32_t startPos)
+void draw::Image::distanceField(ivec2 pos, ivec2 size, int32_t upscaler, int32_t startPos)
 {
 	#ifndef BASIC_GRADIENT
 	float maxVal = 1/(1000.0*sqrtf(META_DIST*META_DIST+META_DIST*META_DIST));
