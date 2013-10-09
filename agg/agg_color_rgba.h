@@ -33,7 +33,7 @@ namespace agg
 }
 namespace draw
 {
-	void ParseColor(const char* _input, struct agg::rgba8& color);
+	void parseColor(const char* _input, struct agg::rgba8& color);
 }
 #include <draw/Debug.h>
 
@@ -435,7 +435,7 @@ namespace agg
         // parse a color whith a name or special Format:
         AGG_INLINE void Set(const char * _input)
         {
-            draw::ParseColor(_input, *this);
+            draw::parseColor(_input, *this);
         };
         
         uint32_t Get(void) const
@@ -463,7 +463,7 @@ namespace agg
         };
         self_type & operator=(const char* _input)
         {
-            draw::ParseColor(_input, *this);
+            draw::parseColor(_input, *this);
             return *this;
         };
         bool operator==(const self_type& _input) const
