@@ -1,6 +1,6 @@
 /**
  *******************************************************************************
- * @file draw/Debug.h
+ * @file draw/debug.h
  * @brief draw : log wrapper (header)
  * @author Edouard DUPIN
  * @date 21/08/2012
@@ -23,6 +23,6 @@
  */
 
 
-#include <draw/Debug.h>
+#include <draw/debug.h>
 
 const char * drawLibName = "draw     ";

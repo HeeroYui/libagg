@@ -45,7 +45,7 @@ def Create(target):
 	
 	#ewol abstraction of the graphic librairies :
 	myModule.AddSrcFile([
-		'draw/Debug.cpp',
+		'draw/debug.cpp',
 		'draw/Color.cpp',
 		'draw/Image.cpp'])
 	

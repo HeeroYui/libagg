@@ -28,7 +28,7 @@
 #include <etk/types.h>
 #include <etk/Vector.h>
 #include <etk/math/Vector2D.h>
-#include <draw/Debug.h>
+#include <draw/debug.h>
 #include <draw/Color.h>
 #include <agg/agg_pixfmt_rgba.h>
 #include <agg/agg_color_rgba.h>

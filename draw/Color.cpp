@@ -25,7 +25,7 @@
 #include <etk/types.h>
 #include <etk/tool.h>
 #include <draw/Color.h>
-#include <draw/Debug.h>
+#include <draw/debug.h>
 
 
 const draw::Color draw::color::none((uint32_t)0x00000000);

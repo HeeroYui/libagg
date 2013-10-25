@@ -1,6 +1,6 @@
 /**
  *******************************************************************************
- * @file draw/Debug.h
+ * @file draw/debug.h
  * @brief draw : log wrapper (Sources)
  * @author Edouard DUPIN
  * @date 21/08/2012
@@ -26,7 +26,7 @@
 #define __DRAW_DEBUG_H__
 
 #include <etk/types.h>
-#include <etk/Debug.h>
+#include <etk/debugGeneric.h>
 
 extern const char * drawLibName;
 

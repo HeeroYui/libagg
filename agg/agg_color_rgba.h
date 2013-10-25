@@ -35,7 +35,7 @@ namespace draw
 {
 	void parseColor(const char* _input, struct agg::rgba8& color);
 }
-#include <draw/Debug.h>
+#include <draw/debug.h>
 
 namespace agg
 {
