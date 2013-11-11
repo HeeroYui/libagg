@@ -26,7 +26,7 @@
 #define __DRAW_IMAGE_H__
 
 #include <etk/types.h>
-#include <etk/Vector.h>
+#include <vector>
 #include <etk/math/Vector2D.h>
 #include <draw/debug.h>
 #include <draw/Color.h>
@@ -49,8 +49,8 @@
 class Grid
 {
 	public:
-		etk::Vector2D<int32_t> m_size;
-		etk::Vector<int32_t> m_data;
+		std::vector2D<int32_t> m_size;
+		std::vector<int32_t> m_data;
 		int32_t m_outsideVal;
 		int32_t m_errorVal;
 		Grid(ivec2 _size) {
@@ -60,7 +60,7 @@ class Grid
 			// basic element :
 			int32_t tmpPoint = 0;
 			// preallocate data with a basic bg elements :
-			m_data.reSize(m_size.x()*m_size.y(), tmpPoint);
+			m_data.resize(m_size.x()*m_size.y(), tmpPoint);
 		};
 		~Grid(void) { };
 		void setOutsideVal(int32_t _newVal) {
@@ -69,20 +69,20 @@ class Grid
 		void setErrorVal(int32_t _newVal) {
 			m_errorVal = _newVal;
 		}
-		void setInide(etk::Vector2D<int32_t> _pos) {
+		void setInide(std::vector2D<int32_t> _pos) {
 			if(    _pos.x()>=0 && _pos.x()<m_size.x()
 			    && _pos.y()>=0 && _pos.y()<m_size.y()) {
 				m_data[_pos.x()+_pos.y()*m_size.x()]=0;
 			}
 		};
-		void setOutside(etk::Vector2D<int32_t> _pos) {
+		void setOutside(std::vector2D<int32_t> _pos) {
 			if(    _pos.x()>=0 && _pos.x()<m_size.x()
 			    && _pos.y()>=0 && _pos.y()<m_size.y()) {
 				m_data[_pos.x()+_pos.y()*m_size.x()]=m_outsideVal;
 			}
 		};
 		
-		int32_t get(etk::Vector2D<int32_t> _pos) {
+		int32_t get(std::vector2D<int32_t> _pos) {
 			;
 			if(    _pos.x()>0 && _pos.x()<m_size.x()
 			    && _pos.y()>0 && _pos.y()<m_size.y()) {
@@ -91,7 +91,7 @@ class Grid
 			return m_errorVal;
 		};
 		
-		void set(etk::Vector2D<int32_t> _pos, int32_t _val) {
+		void set(std::vector2D<int32_t> _pos, int32_t _val) {
 			if(    _pos.x()>0 && _pos.x()<m_size.x()
 			    && _pos.y()>0 && _pos.y()<m_size.y()) {
 				m_data[_pos.x()+_pos.y()*m_size.x()] = _val;
@@ -103,7 +103,7 @@ class Grid
 class Grid {
 	public:
 		ivec2 m_size;
-		etk::Vector<ivec2> m_data;
+		std::vector<ivec2> m_data;
 		int32_t m_outsideVal;
 		int32_t m_errorVal;
 		Grid(ivec2 _size) {
@@ -111,9 +111,9 @@ class Grid {
 			m_outsideVal = 20;
 			m_errorVal = 0;
 			// basic element :
-			etk::Vector2D<int32_t> tmpPoint(0,0);
+			ivec2 tmpPoint(0,0);
 			// preallocate data with a basic bg elements :
-			m_data.reSize(m_size.x()*m_size.y(), tmpPoint);
+			m_data.resize(m_size.x()*m_size.y(), tmpPoint);
 		};
 		~Grid(void) { };
 		void setOutsideVal(int32_t _newVal) {
@@ -142,7 +142,7 @@ class Grid {
 			//    && _pos.y>0 && _pos.y<m_size.y) {
 				return m_data[_pos.x()+_pos.y()*m_size.x()];
 			//}
-			//return etk::Vector2D<int32_t>(m_errorVal,m_errorVal);
+			//return std::vector2D<int32_t>(m_errorVal,m_errorVal);
 		};
 		
 		void set(ivec2 _pos, ivec2 _val) {
@@ -175,7 +175,7 @@ namespace draw
 	class Image {
 		private:
 			ivec2 m_size;
-			etk::Vector<draw::Color> m_data;
+			std::vector<draw::Color> m_data;
 			agg::rendering_buffer * m_renderingBuffer;
 			agg::pixfmt_rgba32 * m_pixFrame;
 			rendererBase_t * m_renderBase;
@@ -204,7 +204,7 @@ namespace draw
 		// -----------------------------------------------
 		public :
 			void resize(ivec2 size);
-			//void Resize(etk::Vector2D<int32_t> startPos, Vector2D<int32_t> size);
+			//void Resize(std::vector2D<int32_t> startPos, Vector2D<int32_t> size);
 			
 			ivec2 getSize(void) const {
 				return m_size;
@@ -216,7 +216,7 @@ namespace draw
 				return m_size.y();
 			};
 			
-			//void Move(etk::Vector2D<int32_t> pos);
+			//void Move(std::vector2D<int32_t> pos);
 			
 			//void Rotate(float angle); // radian
 			
@@ -249,9 +249,9 @@ namespace draw
 				}
 			}
 			
-			//Image getSubImage(etk::Vector2D<int32_t> startPos, Vector2D<int32_t> size) const;
+			//Image getSubImage(std::vector2D<int32_t> startPos, Vector2D<int32_t> size) const;
 			
-			//void setData(uint8_t *data, etk::Vector2D<int32_t> size);
+			//void setData(uint8_t *data, std::vector2D<int32_t> size);
 			
 		// -----------------------------------------------
 		// -- drawing tools :

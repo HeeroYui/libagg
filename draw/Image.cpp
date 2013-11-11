@@ -57,7 +57,7 @@ void draw::Image::init(void)
 	// basic element :
 	draw::Color tmpBg(0,0,0,0);
 	// preallocate data with a basic bg elements :
-	m_data.reSize(m_size.x()*m_size.y(), tmpBg);
+	m_data.resize(m_size.x()*m_size.y(), tmpBg);
 	if (m_size.x()*m_size.y() > m_data.size()) {
 		DRAW_ERROR("Allocation of data buffer in error");
 		return;
@@ -142,7 +142,7 @@ void draw::Image::resize(ivec2 size)
 	// basic element :
 	draw::Color tmpBg(0,0,0,0);
 	// preallocate data with a basic bg elements :
-	m_data.reSize(m_size.x()*m_size.y(), tmpBg);
+	m_data.resize(m_size.x()*m_size.y(), tmpBg);
 	if (m_size.x()*m_size.y() > m_data.size()) {
 		DRAW_ERROR("Allocation of data buffer in error");
 		return;
@@ -231,7 +231,7 @@ void draw::Image::dot(vec2 pos)
 	/*
 		Begin();
 		MoveTo(pos);
-		LineTo(pos+etk::Vector2D<float>(1,1));
+		LineTo(pos+std::vector2D<float>(1,1));
 		End();
 	*/
 	set(pos, m_fillColor);
@@ -321,7 +321,7 @@ void draw::Image::distanceField(ivec2 pos, ivec2 size, int32_t upscaler, int32_t
 {
 	#ifndef BASIC_GRADIENT
 	float maxVal = 1/(1000.0*sqrtf(META_DIST*META_DIST+META_DIST*META_DIST));
-	etk::Vector2D<int32_t> tmpPos;
+	std::vector2D<int32_t> tmpPos;
 	// generate distance system ... matrix ...
 	Grid grid2(ivec2(META_DIST*2,META_DIST*2));
 	for(tmpPos.setY(0) ; tmpPos.y()<META_DIST*2 ; tmpPos+=vec2(0,1) ) {
