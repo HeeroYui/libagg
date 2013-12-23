@@ -2,20 +2,26 @@
 # --------------------------------------------------------
 # -- Bullet librairy
 # --------------------------------------------------------
-import lutinModule
-import lutinTools
+import lutinModule as module
+import lutinTools as tools
 
-def Create(target):
-	myModule = lutinModule.module(__file__, 'agg', 'LIBRARY')
+
+def get_desc():
+	return "AGG C++ graphic drawer"
+
+
+
+def create(target):
+	myModule = module.Module(__file__, 'agg', 'LIBRARY')
 	
-	myModule.AddModuleDepend(['etk', 'freetype'])
+	myModule.add_module_depend(['etk', 'freetype'])
 	
-	myModule.AddPath(lutinTools.GetCurrentPath(__file__)+"/agg/")
-	myModule.AddPath(lutinTools.GetCurrentPath(__file__)+"/agg/util/")
+	myModule.add_path(tools.get_current_path(__file__)+"/agg/")
+	myModule.add_path(tools.get_current_path(__file__)+"/agg/util/")
 	
-	myModule.AddExportPath(lutinTools.GetCurrentPath(__file__))
+	myModule.add_export_path(tools.get_current_path(__file__))
 	
-	myModule.AddSrcFile([
+	myModule.add_src_file([
 		'agg/agg_arc.cpp',
 		'agg/agg_arrowhead.cpp',
 		'agg/agg_bezier_arc.cpp',
@@ -44,7 +50,7 @@ def Create(target):
 		'agg/agg_vpgen_segmentator.cpp'])
 	
 	#ewol abstraction of the graphic librairies :
-	myModule.AddSrcFile([
+	myModule.add_src_file([
 		'draw/debug.cpp',
 		'draw/Color.cpp',
 		'draw/Image.cpp'])
