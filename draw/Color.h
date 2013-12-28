@@ -25,7 +25,7 @@
 #ifndef __DRAW_COLOR_H__
 #define __DRAW_COLOR_H__
 
-#include <etk/UString.h>
+#include <etk/types.h>
 #include <agg/agg_color_rgba.h>
 namespace agg {
 	etk::CCout& operator <<(etk::CCout &os, const  struct agg::rgba8& obj);
