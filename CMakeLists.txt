@@ -63,6 +63,19 @@ set(src_files
 include_directories(${etk_SOURCE_DIR})
 include_directories(${linearmath_SOURCE_DIR}/bullet/src/)
 
+
+add_definitions( -DDEBUG_LEVEL=3 )
+add_definitions( -DDEBUG=1 )
+if (APPLE)
+	add_definitions( -D__TARGET_OS__MacOs )
+elseif (UNIX)
+	add_definitions( -D__TARGET_OS__Linux )
+elseif (WIN32)
+	add_definitions( -D__TARGET_OS__Windows )
+endif ()
+
+
+
 #Create a static Lib:
 add_library(agg STATIC ${src_files} )
 include_directories(${freetype_SOURCE_DIR})

@@ -370,8 +370,6 @@ void draw::parseColor(const char* _input, struct agg::rgba8& color)
 		return;
 	}
 	const char* inputData = _input;
-	uint32_t _red, _green, _blue, _alpha;
-	float fred, fgreen, fblue, falpha;
 	size_t len = strlen(_input);
 	
 	if(    len >=1
