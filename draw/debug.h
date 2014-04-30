@@ -25,20 +25,44 @@
 #ifndef __DRAW_DEBUG_H__
 #define __DRAW_DEBUG_H__
 
-#include <etk/types.h>
-#include <etk/debugGeneric.h>
+#include <etk/log.h>
 
-extern const char * drawLibName;
+namespace draw {
+	int32_t getLogId(void);
+};
+// TODO : Review this problem of multiple intanciation of "std::stringbuf sb"
+#define DRAW_BASE(info,data) \
+	do { \
+		if (info <= etk::log::getLevel(draw::getLogId())) { \
+			std::stringbuf sb; \
+			std::ostream tmpStream(&sb); \
+			tmpStream << data; \
+			etk::log::logStream(draw::getLogId(), info, __LINE__, __class__, __func__, tmpStream); \
+		} \
+	} while(0)
 
-#define DRAW_CRITICAL(data)			ETK_CRITICAL(drawLibName, data)
-#define DRAW_WARNING(data)			ETK_WARNING(drawLibName, data)
-#define DRAW_ERROR(data)			ETK_ERROR(drawLibName, data)
-#define DRAW_INFO(data)				ETK_INFO(drawLibName, data)
-#define DRAW_DEBUG(data)			ETK_DEBUG(drawLibName, data)
-#define DRAW_VERBOSE(data)			ETK_VERBOSE(drawLibName, data)
-#define DRAW_ASSERT(cond, data)		ETK_ASSERT(drawLibName, cond, data)
-#define DRAW_CHECK_INOUT(cond)		ETK_CHECK_INOUT(drawLibName, cond)
-#define DRAW_TODO(cond)				ETK_TODO(drawLibName, cond)
+#define DRAW_CRITICAL(data)      DRAW_BASE(1, data)
+#define DRAW_ERROR(data)         DRAW_BASE(2, data)
+#define DRAW_WARNING(data)       DRAW_BASE(3, data)
+#ifdef DEBUG
+	#define DRAW_INFO(data)          DRAW_BASE(4, data)
+	#define DRAW_DEBUG(data)         DRAW_BASE(5, data)
+	#define DRAW_VERBOSE(data)       DRAW_BASE(6, data)
+	#define DRAW_TODO(data)          DRAW_BASE(4, "TODO : " << data)
+#else
+	#define DRAW_INFO(data)          do { } while(false)
+	#define DRAW_DEBUG(data)         do { } while(false)
+	#define DRAW_VERBOSE(data)       do { } while(false)
+	#define DRAW_TODO(data)          do { } while(false)
+#endif
+
+#define DRAW_ASSERT(cond,data) \
+	do { \
+		if (!(cond)) { \
+			DRAW_CRITICAL(data); \
+			assert(!#cond); \
+		} \
+	} while (0)
 
 #endif
 

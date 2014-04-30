@@ -486,7 +486,7 @@ namespace agg
             }
             return false;
         };
-        friend etk::CCout& operator <<( etk::CCout &os,const self_type& obj);
+        friend std::ostream& operator <<( std::ostream &os,const self_type& obj);
     };
 
 

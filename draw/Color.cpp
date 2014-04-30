@@ -469,7 +469,7 @@ void draw::parseColor(const char* _input, struct agg::rgba8& color)
 	TK_VERBOSE("Parse color : \"" << inputData << "\"  == > " << color);
 }
 
-etk::CCout& agg::operator <<(etk::CCout &os, const  struct agg::rgba8& obj)
+std::ostream& agg::operator <<(std::ostream &os, const  struct agg::rgba8& obj)
 {
 	char tmpData[256];
 	snprintf(tmpData, 256, "#%02X%02X%02X%02X", obj.r, obj.g, obj.b, obj.a);

@@ -25,4 +25,8 @@
 
 #include <draw/debug.h>
 
-const char * drawLibName = "draw     ";
+int32_t draw::getLogId(void) {
+	static int32_t g_val = etk::log::registerInstance("draw");
+	return g_val;
+}
+
