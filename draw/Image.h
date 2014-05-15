@@ -62,7 +62,7 @@ class Grid
 			// preallocate data with a basic bg elements :
 			m_data.resize(m_size.x()*m_size.y(), tmpPoint);
 		};
-		~Grid(void) { };
+		~Grid() { };
 		void setOutsideVal(int32_t _newVal) {
 			m_outsideVal = _newVal;
 		}
@@ -115,7 +115,7 @@ class Grid {
 			// preallocate data with a basic bg elements :
 			m_data.resize(m_size.x()*m_size.y(), tmpPoint);
 		};
-		~Grid(void) { };
+		~Grid() { };
 		void setOutsideVal(int32_t _newVal) {
 			m_outsideVal = _newVal;
 		}
@@ -160,7 +160,7 @@ class Grid {
 				_p = other;
 			}
 		};
-		void generateSDF(void);
+		void generateSDF();
 };
 #endif
 
@@ -189,15 +189,15 @@ namespace draw
 		public:
 			// constructor :
 			Image(ivec2 size);
-			Image(void);
+			Image();
 			// destructor
-			~Image(void);
+			~Image();
 			// initialiser
-			void init(void);
+			void init();
 		
 		// EWOL internal API for Texture system :
 		public:
-			void* getTextureDataPointer(void) { return &m_data[0]; };
+			void* getTextureDataPointer() { return &m_data[0]; };
 		
 		// -----------------------------------------------
 		// -- basic tools :
@@ -206,13 +206,13 @@ namespace draw
 			void resize(ivec2 size);
 			//void Resize(std::vector2D<int32_t> startPos, Vector2D<int32_t> size);
 			
-			ivec2 getSize(void) const {
+			ivec2 getSize() const {
 				return m_size;
 			};
-			int32_t getWidth(void) const {
+			int32_t getWidth() const {
 				return m_size.x();
 			};
-			int32_t getHeight(void) const {
+			int32_t getHeight() const {
 				return m_size.y();
 			};
 			
@@ -223,7 +223,7 @@ namespace draw
 			//void Zoom(float coefficient);
 			
 			
-			void clear(void) {
+			void clear() {
 				for (int32_t iii=0; iii<m_size.x()*m_size.y(); iii++) {
 					m_data[iii] = m_fillColor;
 				}
@@ -257,8 +257,8 @@ namespace draw
 		// -- drawing tools :
 		// -----------------------------------------------
 		public :
-			void begin(void);
-			void end(void);
+			void begin();
+			void end();
 			void setFillColor(draw::Color newColor) {
 				m_fillColor = newColor;
 			}
@@ -272,8 +272,8 @@ namespace draw
 			void moveToAbs(vec2 pos);
 			void lineTo(vec2 pos);
 			void lineToAbs(vec2 pos);
-			void join(void);
-			void draw(void);
+			void join();
+			void draw();
 			
 			void line(vec2 posStart, vec2 posEnd);
 			void dot(vec2 pos);
@@ -281,7 +281,7 @@ namespace draw
 			void circle(vec2 pos, float radius, float angleStart=0, float angleStop=2*M_PI);
 			void disc(vec2 pos, float radius, float angleStart=0, float angleStop=2*M_PI);
 			// generate the distant field from the alpha value of the Image
-			void distanceField(void);
+			void distanceField();
 			void distanceField(ivec2 pos, ivec2 size, int32_t upscaler=1, int32_t startPos=0);
 			
 			void saveFile(const char * file) {};

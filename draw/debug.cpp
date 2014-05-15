@@ -25,7 +25,7 @@
 
 #include <draw/debug.h>
 
-int32_t draw::getLogId(void) {
+int32_t draw::getLogId() {
 	static int32_t g_val = etk::log::registerInstance("draw");
 	return g_val;
 }

@@ -39,7 +39,7 @@ namespace draw {
 		public :
 			float r,g,b,a;
 			
-			Colorf(void) :
+			Colorf() :
 				r(0.0),
 				g(0.0),
 				b(0.0),
@@ -61,7 +61,7 @@ namespace draw {
 				b = (float)_input.b / 255.0;
 				a = (float)_input.a / 255.0;
 			}
-			~Colorf(void)
+			~Colorf()
 			{
 				
 			}

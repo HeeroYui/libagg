@@ -25,7 +25,7 @@
 #include <draw/Image.h>
 
 
-draw::Image::Image(void) :
+draw::Image::Image() :
 	m_renderingBuffer(NULL),
 	m_pixFrame(NULL),
 	m_renderBase(NULL),
@@ -52,7 +52,7 @@ draw::Image::Image(ivec2 _size) :
 	init();
 }
 
-void draw::Image::init(void)
+void draw::Image::init()
 {
 	// basic element :
 	draw::Color tmpBg(0,0,0,0);
@@ -100,7 +100,7 @@ void draw::Image::init(void)
 	}
 }
 
-draw::Image::~Image(void)
+draw::Image::~Image()
 {
 	if (NULL != m_renderArea) {
 		delete(m_renderArea);
@@ -186,12 +186,12 @@ void draw::Image::resize(ivec2 size)
 }
 
 
-void draw::Image::begin(void)
+void draw::Image::begin()
 {
 	
 }
 
-void draw::Image::end(void)
+void draw::Image::end()
 {
 	
 }
@@ -216,12 +216,12 @@ void draw::Image::lineToAbs(vec2 pos)
 	
 }
 // link the curent line with his start
-void draw::Image::join(void)
+void draw::Image::join()
 {
 	
 }
 // generate the display
-void draw::Image::draw(void)
+void draw::Image::draw()
 {
 	
 }
@@ -310,7 +310,7 @@ void Grid::generateSDF()
 
 // see : http://www.codersnotes.com/notes/signed-distance-fields
 
-void draw::Image::distanceField(void)
+void draw::Image::distanceField()
 {
 	distanceField(ivec2(0,0), m_size);
 }
