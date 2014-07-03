@@ -369,9 +369,9 @@ void draw::Image::distanceField(ivec2 pos, ivec2 size, int32_t upscaler, int32_t
 			draw::Color tmpColor = get(pos+tmpPos);
 			float tmpValue = ((1.0-((float)newDist * maxVal)) * 0.5) * 128.0;
 			if (tmpColor.a<=0x7F) {
-				tmpColor.a = etk_avg(0, tmpValue, 255);
+				tmpColor.a = std::avg(0, tmpValue, 255);
 			} else {
-				tmpColor.a = etk_avg(0, 255-tmpValue, 255);
+				tmpColor.a = std::avg(0, 255-tmpValue, 255);
 			}
 			set(pos+tmpPos, tmpColor);
 		}
@@ -422,7 +422,7 @@ void draw::Image::distanceField(ivec2 pos, ivec2 size, int32_t upscaler, int32_t
 			*/
 			draw::Color tmpColor = get(pos+tmpPos);
 			// Clamp and scale it, just for display purposes.
-			tmpColor.a = etk_avg(0, (dist*3 + 128), 255);
+			tmpColor.a = std::avg(0.0f, (dist*3 + 128), 255.0f);
 			set(pos+tmpPos, tmpColor);
 		}
 	}

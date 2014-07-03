@@ -423,27 +423,27 @@ void draw::parseColor(const char* _input, struct agg::rgba8& color)
 		int32_t _red=0, _green=0, _blue=0, _alpha=0;
 		float   fred=0, fgreen=0, fblue=0, falpha=0;
 		if (sscanf(inputData + 4, "%u,%u,%u,%u", &_red, &_green, &_blue, &_alpha) == 4) {
-			color.r = etk_min(0xFF, _red);
-			color.g = etk_min(0xFF, _green);
-			color.b = etk_min(0xFF, _blue);
-			color.a = etk_min(0xFF, _alpha);
+			color.r = std::min(0xFF, _red);
+			color.g = std::min(0xFF, _green);
+			color.b = std::min(0xFF, _blue);
+			color.a = std::min(0xFF, _alpha);
 		} else if (sscanf(inputData + 4, "%u,%u,%u", &_red, &_green, &_blue) == 3) {
-			color.r = etk_min(0xFF, _red);
-			color.g = etk_min(0xFF, _green);
-			color.b = etk_min(0xFF, _blue);
+			color.r = std::min(0xFF, _red);
+			color.g = std::min(0xFF, _green);
+			color.b = std::min(0xFF, _blue);
 		} else if (sscanf(inputData + 4, "%f%%,%f%%,%f%%,%f%%", &fred, &fgreen, &fblue, &falpha) == 4) {
-			fred   = etk_avg(0.0, fred, 1.0);
-			fgreen = etk_avg(0.0, fgreen, 1.0);
-			fblue  = etk_avg(0.0, fblue, 1.0);
-			falpha = etk_avg(0.0, falpha, 1.0);
+			fred   = std::avg(0.0f, fred, 1.0f);
+			fgreen = std::avg(0.0f, fgreen, 1.0f);
+			fblue  = std::avg(0.0f, fblue, 1.0f);
+			falpha = std::avg(0.0f, falpha, 1.0f);
 			color.r = (uint8_t)(fred * 255.);
 			color.g = (uint8_t)(fgreen * 255.);
 			color.b = (uint8_t)(fblue * 255.);
 			color.a = (uint8_t)(falpha * 255.);
 		} else if (sscanf(inputData + 4, "%f%%,%f%%,%f%%", &fred, &fgreen, &fblue) == 3) {
-			fred  = etk_avg(0.0, fred, 1.0);
-			fgreen= etk_avg(0.0, fgreen, 1.0);
-			fblue = etk_avg(0.0, fblue, 1.0);
+			fred  = std::avg(0.0f, fred, 1.0f);
+			fgreen= std::avg(0.0f, fgreen, 1.0f);
+			fblue = std::avg(0.0f, fblue, 1.0f);
 			color.r = (uint8_t)(fred * 255.);
 			color.g = (uint8_t)(fgreen * 255.);
 			color.b = (uint8_t)(fblue * 255.);
