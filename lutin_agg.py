@@ -2,8 +2,8 @@
 # --------------------------------------------------------
 # -- Bullet librairy
 # --------------------------------------------------------
-import lutinModule as module
-import lutinTools as tools
+import lutin.module as module
+import lutin.tools as tools
 
 
 def get_desc():
