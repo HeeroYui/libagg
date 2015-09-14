@@ -47,13 +47,44 @@ def create(target):
 		'agg/agg_vcgen_stroke.cpp',
 		'agg/agg_vpgen_clip_polygon.cpp',
 		'agg/agg_vpgen_clip_polyline.cpp',
-		'agg/agg_vpgen_segmentator.cpp'])
-	
+		'agg/agg_vpgen_segmentator.cpp'
+		])
+	myModule.add_header_file([
+		'agg/agg_arc.h',
+		'agg/agg_array.h',
+		'agg/agg_arrowhead.h',
+		'agg/agg_bezier_arc.h',
+		'agg/agg_bspline.h',
+		'agg/agg_curves.h',
+		'agg/agg_embedded_raster_fonts.h',
+		'agg/agg_font_freetype.h',
+		'agg/agg_gsv_text.h',
+		'agg/agg_image_filters.h',
+		'agg/agg_line_aa_basics.h',
+		'agg/agg_rounded_rect.h',
+		'agg/agg_trans_affine.h',
+		'agg/agg_trans_double_path.h',
+		'agg/agg_trans_single_path.h',
+		'agg/agg_trans_warp_magnifier.h',
+		'agg/agg_vcgen_bspline.h',
+		'agg/agg_vcgen_contour.h',
+		'agg/agg_vcgen_dash.h',
+		'agg/agg_vcgen_markers_term.h',
+		'agg/agg_vcgen_smooth_poly1.h',
+		'agg/agg_vcgen_stroke.h',
+		'agg/agg_vpgen_clip_polygon.h',
+		'agg/agg_vpgen_clip_polyline.h',
+		'agg/agg_vpgen_segmentator.h'
+		])
 	#ewol abstraction of the graphic librairies :
+	# TODO : Maybe deprecated ...
 	myModule.add_src_file([
 		'draw/debug.cpp',
 		'draw/Color.cpp',
-		'draw/Image.cpp'])
-	
-	# add the currrent module at the 
+		'draw/Image.cpp'
+		])
+	myModule.add_header_file([
+		'draw/Color.h',
+		'draw/Image.h'
+		])
 	return myModule

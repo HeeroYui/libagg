@@ -381,7 +381,7 @@ void draw::parseColor(const char* _input, struct agg::rgba8& color)
 				color.g = (green | green << 4);
 				color.b = (blue | blue << 4);
 			} else {
-				TK_ERROR(" pb in parsing the color : \"" << inputData << "\"");
+				DRAW_ERROR(" pb in parsing the color : \"" << inputData << "\"");
 			}
 		} else if (len == 5) {
 			int32_t red=0, green=0, blue=0, alpha=0;
@@ -391,7 +391,7 @@ void draw::parseColor(const char* _input, struct agg::rgba8& color)
 				color.b = (blue | blue << 4);
 				color.a = (alpha | alpha << 4);
 			} else {
-				TK_ERROR(" pb in parsing the color : \"" << inputData << "\"");
+				DRAW_ERROR(" pb in parsing the color : \"" << inputData << "\"");
 			}
 		} else if (len == 7) {
 			int32_t red=0, green=0, blue=0;
@@ -400,7 +400,7 @@ void draw::parseColor(const char* _input, struct agg::rgba8& color)
 				color.g = green;
 				color.b = blue;
 			} else {
-				TK_ERROR(" pb in parsing the color : \"" << inputData << "\"");
+				DRAW_ERROR(" pb in parsing the color : \"" << inputData << "\"");
 			}
 		} else if (len == 9) {
 			int32_t red=0, green=0, blue=0, alpha=0;
@@ -410,10 +410,10 @@ void draw::parseColor(const char* _input, struct agg::rgba8& color)
 				color.b = blue;
 				color.a = alpha;
 			} else {
-				TK_ERROR(" pb in parsing the color : \"" << inputData << "\"");
+				DRAW_ERROR(" pb in parsing the color : \"" << inputData << "\"");
 			}
 		} else {
-			TK_ERROR(" pb in parsing the color : \"" << inputData << "\"  == > unknown methode ...");
+			DRAW_ERROR(" pb in parsing the color : \"" << inputData << "\"  == > unknown methode ...");
 		}
 	} else if(    4 <= len
 	           && inputData[0] == 'r'
@@ -448,7 +448,7 @@ void draw::parseColor(const char* _input, struct agg::rgba8& color)
 			color.g = (uint8_t)(fgreen * 255.);
 			color.b = (uint8_t)(fblue * 255.);
 		} else {
-			TK_ERROR(" pb in parsing the color : \"" << inputData << "\"  == > unknown methode ...");
+			DRAW_ERROR(" pb in parsing the color : \"" << inputData << "\"  == > unknown methode ...");
 		}
 	} else {
 		bool findIt = false;
@@ -463,10 +463,10 @@ void draw::parseColor(const char* _input, struct agg::rgba8& color)
 		}
 		// not find color ...
 		if (findIt == false) {
-			TK_ERROR(" pb in parsing the color : \"" << inputData << "\" not find ...");
+			DRAW_ERROR(" pb in parsing the color : \"" << inputData << "\" not find ...");
 		}
 	}
-	TK_VERBOSE("Parse color : \"" << inputData << "\"  == > " << color);
+	DRAW_VERBOSE("Parse color : \"" << inputData << "\"  == > " << color);
 }
 
 std::ostream& agg::operator <<(std::ostream &os, const  struct agg::rgba8& obj)
