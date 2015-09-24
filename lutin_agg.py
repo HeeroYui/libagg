@@ -12,16 +12,16 @@ def get_desc():
 
 
 def create(target):
-	myModule = module.Module(__file__, 'agg', 'LIBRARY')
+	my_module = module.Module(__file__, 'agg', 'LIBRARY')
 	
-	myModule.add_module_depend(['etk', 'freetype'])
+	my_module.add_module_depend(['etk', 'freetype'])
 	
-	myModule.add_path(tools.get_current_path(__file__)+"/agg/")
-	myModule.add_path(tools.get_current_path(__file__)+"/agg/util/")
+	my_module.add_path(tools.get_current_path(__file__)+"/agg/")
+	my_module.add_path(tools.get_current_path(__file__)+"/agg/util/")
 	
-	myModule.add_export_path(tools.get_current_path(__file__))
+	my_module.add_export_path(tools.get_current_path(__file__))
 	
-	myModule.add_src_file([
+	my_module.add_src_file([
 		'agg/agg_arc.cpp',
 		'agg/agg_arrowhead.cpp',
 		'agg/agg_bezier_arc.cpp',
@@ -49,7 +49,7 @@ def create(target):
 		'agg/agg_vpgen_clip_polyline.cpp',
 		'agg/agg_vpgen_segmentator.cpp'
 		])
-	myModule.add_header_file([
+	my_module.add_header_file([
 		'agg/agg_arc.h',
 		'agg/agg_array.h',
 		'agg/agg_arrowhead.h',
@@ -78,13 +78,13 @@ def create(target):
 		])
 	#ewol abstraction of the graphic librairies :
 	# TODO : Maybe deprecated ...
-	myModule.add_src_file([
+	my_module.add_src_file([
 		'draw/debug.cpp',
 		'draw/Color.cpp',
 		'draw/Image.cpp'
 		])
-	myModule.add_header_file([
+	my_module.add_header_file([
 		'draw/Color.h',
 		'draw/Image.h'
 		])
-	return myModule
+	return my_module
