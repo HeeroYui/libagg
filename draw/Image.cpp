@@ -23,6 +23,7 @@
  */
 
 #include <draw/Image.h>
+#include <draw/debug.h>
 
 
 draw::Image::Image() :
